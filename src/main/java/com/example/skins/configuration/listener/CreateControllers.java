@@ -1,12 +1,10 @@
 package com.example.skins.configuration.listener;
 
+import com.example.skins.user.controller.simple.UserSimpleController;
+import com.example.skins.user.service.UserService;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
-import com.example.skins.skin.controller.simple.SkinSimpleController;
-import com.example.skins.skin.controller.simple.CaseSimpleController;
-import com.example.skins.skin.service.SkinService;
-import com.example.skins.skin.service.CaseService;
 import com.example.skins.component.DtoFunctionFactory;
 
 /**
@@ -18,17 +16,12 @@ public class CreateControllers implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent event) {
-        SkinService SkinService = (SkinService) event.getServletContext().getAttribute("SkinService");
-        CaseService CaseService = (CaseService) event.getServletContext().getAttribute("CaseService");
+        UserService userService = (UserService) event.getServletContext().getAttribute("userService");
 
-        event.getServletContext().setAttribute("SkinController", new SkinSimpleController(
-                SkinService,
+        event.getServletContext().setAttribute("userController", new UserSimpleController(
+                userService,
                 new DtoFunctionFactory()
         ));
 
-        event.getServletContext().setAttribute("CaseController", new CaseSimpleController(
-                CaseService,
-                new DtoFunctionFactory()
-        ));
     }
 }

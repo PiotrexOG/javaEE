@@ -1,5 +1,9 @@
 package com.example.skins.controller.servlet;
 
+import com.example.skins.user.controller.api.UserController;
+import com.example.skins.user.controller.simple.UserSimpleController;
+import com.example.skins.user.dto.PatchUserRequest;
+import com.example.skins.user.dto.PutUserRequest;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.servlet.ServletException;
@@ -8,10 +12,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import com.example.skins.skin.controller.api.SkinController;
-import com.example.skins.skin.controller.api.CaseController;
-import com.example.skins.skin.dto.PatchSkinRequest;
-import com.example.skins.skin.dto.PutSkinRequest;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -31,13 +31,9 @@ public class ApiServlet extends HttpServlet {
     /**
      * Controller for managing collections Skins' representations.
      */
-    private SkinController SkinController;
+    private UserController userController;
 
-    /**
-     * Controller for managing collections Cases' representations.
-     */
-    private CaseController CaseController;
-
+    private String avatarPath;
     /**
      * Definition of paths supported by this servlet. Separate inner class provides composition for static fields.
      */
@@ -63,32 +59,17 @@ public class ApiServlet extends HttpServlet {
         /**
          * All Skins.
          */
-        public static final Pattern CHARACTERS = Pattern.compile("/Skins/?");
+        public static final Pattern USERS = Pattern.compile("/users/?");
 
         /**
          * Single Skin.
          */
-        public static final Pattern CHARACTER = Pattern.compile("/Skins/(%s)".formatted(UUID.pattern()));
+        public static final Pattern USER = Pattern.compile("/users/(%s)".formatted(UUID.pattern()));
 
         /**
          * Single Skin's portrait.
          */
-        public static final Pattern CHARACTER_PORTRAIT = Pattern.compile("/Skins/(%s)/portrait".formatted(UUID.pattern()));
-
-        /**
-         * All Cases.
-         */
-        public static final Pattern PROFESSIONS = Pattern.compile("/Cases/?");
-
-        /**
-         * All Skins of single Case.
-         */
-        public static final Pattern PROFESSION_CHARACTERS = Pattern.compile("/Cases/(%s)/Skins/?".formatted(UUID.pattern()));
-
-        /**
-         * All Skins of single user.
-         */
-        public static final Pattern USER_CHARACTERS = Pattern.compile("/users/(%s)/Skins/?".formatted(UUID.pattern()));
+        public static final Pattern USER_PORTRAIT = Pattern.compile("/users/(%s)/portrait".formatted(UUID.pattern()));
 
     }
 
@@ -111,8 +92,8 @@ public class ApiServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        SkinController = (SkinController) getServletContext().getAttribute("SkinController");
-        CaseController = (CaseController) getServletContext().getAttribute("CaseController");
+        userController = (UserSimpleController) getServletContext().getAttribute("userController");
+        avatarPath = (String) getServletContext().getInitParameter("avatars-path");
     }
 
     @SuppressWarnings("RedundantThrows")
@@ -121,37 +102,24 @@ public class ApiServlet extends HttpServlet {
         String path = parseRequestPath(request);
         String servletPath = request.getServletPath();
         if (Paths.API.equals(servletPath)) {
-            if (path.matches(Patterns.CHARACTERS.pattern())) {
+            if (path.matches(Patterns.USERS.pattern())) {
                 response.setContentType("application/json");
-                response.getWriter().write(jsonb.toJson(SkinController.getSkins()));
+                response.getWriter().write(jsonb.toJson(userController.getUsers()));
                 return;
-            } else if (path.matches(Patterns.CHARACTER.pattern())) {
+            } else if (path.matches(Patterns.USER.pattern())) {
                 response.setContentType("application/json");
-                UUID uuid = extractUuid(Patterns.CHARACTER, path);
-                response.getWriter().write(jsonb.toJson(SkinController.getSkin(uuid)));
+                UUID uuid = extractUuid(Patterns.USER, path);
+                response.getWriter().write(jsonb.toJson(userController.getUser(uuid)));
                 return;
-            } else if (path.matches(Patterns.PROFESSIONS.pattern())) {
-                response.setContentType("application/json");
-                response.getWriter().write(jsonb.toJson(CaseController.getCases()));
+            }
+            else if (path.matches(Patterns.USER_PORTRAIT.pattern())) {
+                response.setContentType("image/png");//could be dynamic but atm we support only one format
+                UUID uuid = extractUuid(Patterns.USER_PORTRAIT, path);
+                byte[] portrait = userController.getUserAvatar(uuid, avatarPath);
+                response.setContentLength(portrait.length);
+                response.getOutputStream().write(portrait);
                 return;
-            } else if (path.matches(Patterns.PROFESSION_CHARACTERS.pattern())) {
-                response.setContentType("application/json");
-                UUID uuid = extractUuid(Patterns.PROFESSION_CHARACTERS, path);
-                response.getWriter().write(jsonb.toJson(SkinController.getCaseSkins(uuid)));
-                return;
-            } else if (path.matches(Patterns.USER_CHARACTERS.pattern())) {
-                response.setContentType("application/json");
-                UUID uuid = extractUuid(Patterns.USER_CHARACTERS, path);
-                response.getWriter().write(jsonb.toJson(SkinController.getUserSkins(uuid)));
-                return;}
-//            } else if (path.matches(Patterns.CHARACTER_PORTRAIT.pattern())) {
-//                response.setContentType("image/png");//could be dynamic but atm we support only one format
-//                UUID uuid = extractUuid(Patterns.CHARACTER_PORTRAIT, path);
-//                byte[] portrait = SkinController.getSkinPortrait(uuid);
-//                response.setContentLength(portrait.length);
-//                response.getOutputStream().write(portrait);
-//                return;
-//            }
+            }
         }
         response.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
@@ -160,14 +128,14 @@ public class ApiServlet extends HttpServlet {
         String path = parseRequestPath(request);
         String servletPath = request.getServletPath();
         if (Paths.API.equals(servletPath)) {
-            if (path.matches(Patterns.CHARACTER.pattern())) {
-                UUID uuid = extractUuid(Patterns.CHARACTER, path);
-                SkinController.putSkin(uuid, jsonb.fromJson(request.getReader(), PutSkinRequest.class));
-                response.addHeader("Location", createUrl(request, Paths.API, "Skins", uuid.toString()));
+            if (path.matches(Patterns.USER.pattern())) {
+                UUID uuid = extractUuid(Patterns.USER, path);
+                userController.putUser(uuid, jsonb.fromJson(request.getReader(), PutUserRequest.class));
+                response.addHeader("Location", createUrl(request, Paths.API, "users", uuid.toString()));
                 return;
-            } else if (path.matches(Patterns.CHARACTER_PORTRAIT.pattern())) {
-                UUID uuid = extractUuid(Patterns.CHARACTER_PORTRAIT, path);
-                SkinController.putSkinPortrait(uuid, request.getPart("portrait").getInputStream());
+            } else if (path.matches(Patterns.USER_PORTRAIT.pattern())) {
+                UUID uuid = extractUuid(Patterns.USER_PORTRAIT, path);
+                //userController.putUserPortrait(uuid, request.getPart("portrait").getInputStream());
                 return;
             }
         }
@@ -180,9 +148,9 @@ public class ApiServlet extends HttpServlet {
         String path = parseRequestPath(request);
         String servletPath = request.getServletPath();
         if (Paths.API.equals(servletPath)) {
-            if (path.matches(Patterns.CHARACTER.pattern())) {
-                UUID uuid = extractUuid(Patterns.CHARACTER, path);
-                SkinController.deleteSkin(uuid);
+            if (path.matches(Patterns.USER.pattern())) {
+                UUID uuid = extractUuid(Patterns.USER, path);
+                userController.deleteUser(uuid);
                 return;
             }
         }
@@ -202,9 +170,9 @@ public class ApiServlet extends HttpServlet {
         String path = parseRequestPath(request);
         String servletPath = request.getServletPath();
         if (Paths.API.equals(servletPath)) {
-            if (path.matches(Patterns.CHARACTER.pattern())) {
-                UUID uuid = extractUuid(Patterns.CHARACTER, path);
-                SkinController.patchSkin(uuid, jsonb.fromJson(request.getReader(), PatchSkinRequest.class));
+            if (path.matches(Patterns.USER.pattern())) {
+                UUID uuid = extractUuid(Patterns.USER, path);
+                userController.patchUser(uuid, jsonb.fromJson(request.getReader(), PatchUserRequest.class));
                 return;
             }
         }

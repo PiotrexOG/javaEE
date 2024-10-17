@@ -2,7 +2,6 @@ package com.example.skins.skin.entity;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import com.example.skins.creature.entity.Creature;
 import com.example.skins.user.entity.User;
 
 import java.io.Serializable;

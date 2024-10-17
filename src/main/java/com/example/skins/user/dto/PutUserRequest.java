@@ -1,8 +1,10 @@
 package com.example.skins.user.dto;
 
+import com.example.skins.skin.entity.Skin;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * PUT user request. Contains only fields that can be set during user creation. User is defined in
@@ -46,5 +48,8 @@ public class PutUserRequest {
      * User's email.
      */
     private String email;
+
+    @Singular
+    private List<Skin> commits;
 
 }

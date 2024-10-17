@@ -7,8 +7,6 @@ import com.example.skins.skin.repository.api.SkinRepository;
 import com.example.skins.skin.repository.api.CaseRepository;
 import com.example.skins.skin.repository.memory.SkinInMemoryRepository;
 import com.example.skins.skin.repository.memory.CaseInMemoryRepository;
-import com.example.skins.skin.service.SkinService;
-import com.example.skins.skin.service.CaseService;
 import com.example.skins.crypto.component.Pbkdf2PasswordHash;
 import com.example.skins.datastore.component.DataStore;
 import com.example.skins.user.repository.api.UserRepository;
@@ -27,12 +25,8 @@ public class CreateServices implements ServletContextListener {
         DataStore dataSource = (DataStore) event.getServletContext().getAttribute("datasource");
 
         UserRepository userRepository = new UserInMemoryRepository(dataSource);
-        CaseRepository CaseRepository = new CaseInMemoryRepository(dataSource);
-        SkinRepository SkinRepository = new SkinInMemoryRepository(dataSource);
 
         event.getServletContext().setAttribute("userService", new UserService(userRepository, new Pbkdf2PasswordHash()));
-        event.getServletContext().setAttribute("SkinService", new SkinService(SkinRepository, CaseRepository, userRepository));
-        event.getServletContext().setAttribute("CaseService", new CaseService(CaseRepository));
     }
 
 }

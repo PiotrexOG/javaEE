@@ -4,6 +4,7 @@ import com.example.skins.crypto.component.Pbkdf2PasswordHash;
 import com.example.skins.user.entity.User;
 import com.example.skins.user.repository.api.UserRepository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -22,6 +23,9 @@ public class UserService {
      */
     private final Pbkdf2PasswordHash passwordHash;
 
+    public List<User> findAll() {
+        return repository.findAll();
+    }
     /**
      * @param repository   repository for Skin entity
      * @param passwordHash hash mechanism used for storing users' passwords
@@ -57,6 +61,14 @@ public class UserService {
     public void create(User user) {
         user.setPassword(passwordHash.generate(user.getPassword().toCharArray()));
         repository.create(user);
+    }
+
+    public void update(User user) {
+        repository.update(user);
+    }
+
+    public void delete(User user) {
+        repository.delete(user);
     }
 
     /**
