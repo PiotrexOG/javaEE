@@ -17,4 +17,17 @@
         <listener-class>com.example.skins.configuration.listener.CreateControllers</listener-class>
     </listener>
 
+    <listener>
+        <listener-class>com.example.skins.configuration.listener.InitializedData</listener-class>
+    </listener>
+
+
+    <context-param>
+        <description>Location to store uploaded avatars</description>
+        <param-name>avatars-path</param-name>
+        <param-value>
+            C:/Users/user/IdeaProjects/GP/GroupProjectV2-database-with-api/database/skins/src/main/resources/test/avatar
+        </param-value>
+    </context-param>
+
 </web-app>
