@@ -1,6 +1,7 @@
 package com.example.skins.configuration.listener;
 
 import com.example.skins.skin.entity.Skin;
+import com.example.skins.user.entity.SkillGroup;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
@@ -43,42 +44,43 @@ public class InitializedData implements ServletContextListener {
      */
     @SneakyThrows
     private void init() {
-        User admin = User.builder()
+        User piotrulo = User.builder()
                 .id(UUID.fromString("c4804e0f-769e-4ab9-9ebe-0578fb4f00a6"))
-                .login("admin")
-                .name("System")
-                .surname("Admin")
-                .birthDate(LocalDate.of(1990, 10, 21))
-                .email("admin@simplerpg.example.com")
+                .login("piotrulo")
+                .name("Piotr")
+                .surname("Wesołowski")
+                .birthDate(LocalDate.of(2003, 1, 28))
+                .email("piotrulo@wesoly.example.com")
                 .password("adminadmin")
-                .roles(List.of(UserRoles.ADMIN, UserRoles.USER))
+                .skillGroup(SkillGroup.SILVER)
+    //            .avatar(getResourceAsByteArray("/test/avatar/calvian.png"))
                 .build();
 
-        User kevin = User.builder()
+        User ewik = User.builder()
                 .id(UUID.fromString("81e1c2a9-7f57-439b-b53d-6db88b071e4e"))
-                .login("kevin")
-                .name("Kevin")
-                .surname("Pear")
-                .birthDate(LocalDate.of(2001, 1, 16))
-                .email("kevin@example.com")
+                .login("ewik")
+                .name("Jakub")
+                .surname("Wojtalewicz")
+                .birthDate(LocalDate.of(2002, 2, 6))
+                .email("ewik@example.com")
                 .password("useruser")
-                .roles(List.of(UserRoles.USER))
+                .skillGroup(SkillGroup.GLOBAL)
                 .build();
 
-        User alice = User.builder()
+        User oskar = User.builder()
                 .id(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4197"))
-                .login("alice")
-                .name("Alice")
-                .surname("Grape")
-                .birthDate(LocalDate.of(2002, 3, 19))
-                .email("alice@example.com")
+                .login("oskar")
+                .name("Oskar")
+                .surname("Wilda")
+                .birthDate(LocalDate.of(2002, 5, 8))
+                .email("oski@example.com")
                 .password("useruser")
-                .roles(List.of(UserRoles.USER))
+                .skillGroup(SkillGroup.GOLD)
                 .build();
 
-        userService.create(admin);
-        userService.create(kevin);
-        userService.create(alice);
+        userService.create(piotrulo);
+        userService.create(ewik);
+        userService.create(oskar);
 
     }
 

@@ -1,5 +1,6 @@
 package com.example.skins.user.entity;
 
+import com.example.skins.skin.entity.Skill;
 import com.example.skins.skin.entity.Skin;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -63,9 +64,10 @@ public class User implements Serializable {
     /**
      * User's security roles.
      */
-    private List<String> roles;
+    private SkillGroup skillGroup;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private byte[] avatar;
 }
+

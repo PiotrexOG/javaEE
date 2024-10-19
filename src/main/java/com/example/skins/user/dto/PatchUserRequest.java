@@ -18,6 +18,10 @@ import java.time.LocalDate;
 public class PatchUserRequest {
 
     /**
+     * User's login.
+     */
+    private String login;
+    /**
      * User's name.
      */
     private String name;
@@ -31,6 +35,11 @@ public class PatchUserRequest {
      * User's birthday.
      */
     private LocalDate birthDate;
+
+    /**
+     * User's password.
+     */
+    private String password;
 
     /**
      * User's email.

@@ -1,5 +1,7 @@
 package com.example.skins.controller.servlet;
 
+import com.example.skins.controller.servlet.exception.AlreadyExistsException;
+import com.example.skins.controller.servlet.exception.NotFoundException;
 import com.example.skins.user.controller.api.UserController;
 import com.example.skins.user.controller.simple.UserSimpleController;
 import com.example.skins.user.dto.PatchUserRequest;
@@ -69,7 +71,7 @@ public class ApiServlet extends HttpServlet {
         /**
          * Single Skin's portrait.
          */
-        public static final Pattern USER_PORTRAIT = Pattern.compile("/users/(%s)/portrait".formatted(UUID.pattern()));
+        public static final Pattern USER_PORTRAIT = Pattern.compile("/users/(%s)/avatar".formatted(UUID.pattern()));
 
     }
 
@@ -134,8 +136,16 @@ public class ApiServlet extends HttpServlet {
                 response.addHeader("Location", createUrl(request, Paths.API, "users", uuid.toString()));
                 return;
             } else if (path.matches(Patterns.USER_PORTRAIT.pattern())) {
+                response.setContentType("image/png");
                 UUID uuid = extractUuid(Patterns.USER_PORTRAIT, path);
-                //userController.putUserPortrait(uuid, request.getPart("portrait").getInputStream());
+                try {
+                    userController.putUserAvatar(uuid, request.getPart("avatar").getInputStream(), avatarPath);
+                    response.setStatus(HttpServletResponse.SC_CREATED);
+                } catch (AlreadyExistsException ex) {
+                    response.sendError(HttpServletResponse.SC_CONFLICT, ex.getMessage());
+                } catch (NotFoundException ex) {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND, ex.getMessage());
+                }
                 return;
             }
         }
@@ -153,6 +163,17 @@ public class ApiServlet extends HttpServlet {
                 userController.deleteUser(uuid);
                 return;
             }
+        }
+        if (path.matches(Patterns.USER_PORTRAIT.pattern())) {
+            UUID uuid = extractUuid(Patterns.USER_PORTRAIT, path);
+            try {
+                userController.deleteUserAvatar(uuid, avatarPath);
+                response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+            } catch (NotFoundException ex) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, ex.getMessage());
+            }
+            return;
+
         }
         response.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
@@ -175,6 +196,18 @@ public class ApiServlet extends HttpServlet {
                 userController.patchUser(uuid, jsonb.fromJson(request.getReader(), PatchUserRequest.class));
                 return;
             }
+        }
+        if (path.matches(Patterns.USER_PORTRAIT.pattern())) {
+            response.setContentType("image/png");
+            UUID uuid = extractUuid(Patterns.USER_PORTRAIT, path);
+            try {
+                userController.patchUserAvatar(uuid, request.getPart("avatar").getInputStream(), avatarPath);
+                response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+            } catch (NotFoundException ex) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, ex.getMessage());
+            }
+            return;
+
         }
         response.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
