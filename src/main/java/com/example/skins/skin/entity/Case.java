@@ -41,11 +41,5 @@ public class Case implements Serializable {
     @Singular
     private List<Skin> skins;
 
-//    /**
-//     * Set of skills available on different levels. While leveling up, Skin gains access to new skills. One skill
-//     * every limit level. There is no rule which levels are limit ones.
-//     */
-//    @Singular
-//    private Map<Integer, Skill> skills;
 
 }

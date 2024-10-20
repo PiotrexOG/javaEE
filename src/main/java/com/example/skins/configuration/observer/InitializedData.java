@@ -1,6 +1,8 @@
 package com.example.skins.configuration.observer;
 
 import com.example.skins.skin.entity.Skin;
+import com.example.skins.skin.service.CaseService;
+import com.example.skins.skin.service.SkinService;
 import com.example.skins.user.entity.SkillGroup;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.Initialized;
@@ -32,6 +34,8 @@ public class InitializedData{
      * User service.
      */
     private final UserService userService;
+    private final SkinService skinService;
+    private final CaseService caseService;
 
     /**
      * The CDI container provides a built-in instance of {@link RequestContextController} that is dependent scoped for
@@ -46,9 +50,13 @@ public class InitializedData{
     @Inject
     public InitializedData(
             UserService userService,
+            SkinService skinService,
+            CaseService caseService,
             RequestContextController requestContextController
     ) {
         this.userService = userService;
+        this.skinService = skinService;
+        this.caseService = caseService;
         this.requestContextController = requestContextController;
     }
 
@@ -103,6 +111,54 @@ public class InitializedData{
         userService.create(piotrulo);
         userService.create(ewik);
         userService.create(oskar);
+
+        // Tworzenie Case'ów (kategorii skinów)
+        Case defaultCase = Case.builder()
+                .id(UUID.randomUUID())
+                .name("Default Case")
+                .releaseDate(LocalDate.now())
+                .seriesId(1)
+                .build();
+
+        Case premiumCase = Case.builder()
+                .id(UUID.randomUUID())
+                .name("Premium Case")
+                .releaseDate(LocalDate.now())
+                .seriesId(2)
+                .build();
+
+        caseService.create(defaultCase);
+        caseService.create(premiumCase);
+
+        // Tworzenie Skinów i przypisanie ich do Case'ów oraz użytkownika
+        Skin redSkin = Skin.builder()
+                .id(UUID.randomUUID())
+                .name("Red Dragon")
+                .floatValue(0.05f)
+                .caseItem(defaultCase)  // przypisanie do defaultCase
+                .user(piotrulo)         // przypisanie do użytkownika
+                .background("Legendary dragon skin")
+                .age(2)
+                .level(5)
+                .experience(1000)
+                .build();
+
+        Skin blueSkin = Skin.builder()
+                .id(UUID.randomUUID())
+                .name("Blue Phoenix")
+                .floatValue(0.10f)
+                .caseItem(premiumCase)  // przypisanie do premiumCase
+                .user(piotrulo)         // przypisanie do użytkownika
+                .background("Mythical phoenix skin")
+                .age(1)
+                .level(10)
+                .experience(2500)
+                .build();
+
+        skinService.create(redSkin);
+        skinService.create(blueSkin);
+
+        System.out.println(skinService.findAll());
 
         requestContextController.deactivate();
 
