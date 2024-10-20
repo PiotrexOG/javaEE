@@ -1,5 +1,7 @@
 package com.example.skins.skin.repository.memory;
 
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
 import com.example.skins.skin.entity.Case;
 import com.example.skins.skin.entity.Skin;
 import com.example.skins.skin.repository.api.SkinRepository;
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 /**
  * Repository for Skin entity. Repositories should be used in business layer (e.g.: in services).
  */
+@RequestScoped
 public class SkinInMemoryRepository implements SkinRepository {
 
     /**
@@ -24,6 +27,7 @@ public class SkinInMemoryRepository implements SkinRepository {
     /**
      * @param store data store
      */
+    @Inject
     public SkinInMemoryRepository(DataStore store) {
         this.store = store;
     }

@@ -1,5 +1,8 @@
 package com.example.skins.datastore.component;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import lombok.NoArgsConstructor;
 import com.example.skins.skin.entity.Skin;
 import lombok.extern.java.Log;
 import com.example.skins.skin.entity.Case;
@@ -20,6 +23,8 @@ import java.util.stream.Collectors;
  * usage.
  */
 @Log
+@ApplicationScoped
+@NoArgsConstructor(force = true)
 public class DataStore {
 
     /**
@@ -45,6 +50,7 @@ public class DataStore {
     /**
      * @param cloningUtility component used for creating deep copies
      */
+    @Inject
     public DataStore(CloningUtility cloningUtility) {
         this.cloningUtility = cloningUtility;
     }

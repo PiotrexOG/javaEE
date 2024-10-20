@@ -1,5 +1,9 @@
 package com.example.skins.user.service;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import lombok.NoArgsConstructor;
+
 import com.example.skins.controller.servlet.exception.AlreadyExistsException;
 import com.example.skins.controller.servlet.exception.NotFoundException;
 import com.example.skins.crypto.component.Pbkdf2PasswordHash;
@@ -19,6 +23,8 @@ import java.util.UUID;
 /**
  * Service layer for all business actions regarding user entity.
  */
+@ApplicationScoped
+@NoArgsConstructor(force = true)
 public class UserService {
 
     /**
@@ -38,6 +44,7 @@ public class UserService {
      * @param repository   repository for Skin entity
      * @param passwordHash hash mechanism used for storing users' passwords
      */
+    @Inject
     public UserService(UserRepository repository, Pbkdf2PasswordHash passwordHash) {
         this.repository = repository;
         this.passwordHash = passwordHash;

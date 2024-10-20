@@ -1,5 +1,7 @@
 package com.example.skins.controller.servlet;
 
+
+import jakarta.inject.Inject;
 import com.example.skins.controller.servlet.exception.AlreadyExistsException;
 import com.example.skins.controller.servlet.exception.NotFoundException;
 import com.example.skins.user.controller.api.UserController;
@@ -33,9 +35,9 @@ public class ApiServlet extends HttpServlet {
     /**
      * Controller for managing collections Skins' representations.
      */
-    private UserController userController;
+    private final UserController userController;
 
-    private String avatarPath;
+    private final String avatarPath;
     /**
      * Definition of paths supported by this servlet. Separate inner class provides composition for static fields.
      */
@@ -82,6 +84,12 @@ public class ApiServlet extends HttpServlet {
      */
     private final Jsonb jsonb = JsonbBuilder.create();
 
+    @Inject
+    public ApiServlet(UserController userController, String avatarPath) {
+        this.userController = userController;
+        this.avatarPath = avatarPath;
+    }
+
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getMethod().equals("PATCH")) {
@@ -91,12 +99,12 @@ public class ApiServlet extends HttpServlet {
         }
     }
 
-    @Override
-    public void init() throws ServletException {
-        super.init();
-        userController = (UserSimpleController) getServletContext().getAttribute("userController");
-        avatarPath = (String) getServletContext().getInitParameter("avatars-path");
-    }
+//    @Override
+//    public void init() throws ServletException {
+//        super.init();
+//        userController = (UserSimpleController) getServletContext().getAttribute("userController");
+//        avatarPath = (String) getServletContext().getInitParameter("avatars-path");
+//    }
 
     @SuppressWarnings("RedundantThrows")
     @Override

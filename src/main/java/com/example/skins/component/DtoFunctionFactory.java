@@ -1,6 +1,6 @@
 package com.example.skins.component;
 
-
+import jakarta.enterprise.context.ApplicationScoped;
 import com.example.skins.skin.entity.Case;
 import com.example.skins.user.dto.GetUserResponse;
 import com.example.skins.user.dto.GetUsersResponse;
@@ -14,6 +14,7 @@ import java.util.function.Function;
  * Factor for creating {@link Function} implementation for converting between various objects used in different layers.
  * Instead of injecting multiple function objects single factory is injected.
  */
+@ApplicationScoped
 public class DtoFunctionFactory {
 
     /**
