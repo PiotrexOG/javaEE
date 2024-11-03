@@ -31,6 +31,8 @@ public interface SkinRepository extends Repository<Skin, UUID> {
      */
     List<Skin> findAllByUser(User user);
 
+    void addSkinToCase(UUID caseId, Skin skin);
+
     /**
      * Seeks for all Case's Skins.
      *

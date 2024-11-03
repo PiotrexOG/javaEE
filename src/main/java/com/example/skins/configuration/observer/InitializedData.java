@@ -20,6 +20,7 @@ import com.example.skins.user.service.UserService;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -114,7 +115,7 @@ public class InitializedData{
 
         // Tworzenie Case'ów (kategorii skinów)
         Case defaultCase = Case.builder()
-                .id(UUID.randomUUID())
+                .id(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123"))
                 .name("Default Case")
                 .releaseDate(LocalDate.now())
                 .seriesId(1)
@@ -132,7 +133,7 @@ public class InitializedData{
 
         // Tworzenie Skinów i przypisanie ich do Case'ów oraz użytkownika
         Skin redSkin = Skin.builder()
-                .id(UUID.randomUUID())
+                .id(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4999"))
                 .name("Red Dragon")
                 .floatValue(0.05f)
                 .caseItem(defaultCase)  // przypisanie do defaultCase
@@ -147,7 +148,7 @@ public class InitializedData{
                 .id(UUID.randomUUID())
                 .name("Blue Phoenix")
                 .floatValue(0.10f)
-                .caseItem(premiumCase)  // przypisanie do premiumCase
+             //   .caseItem(premiumCase)  // przypisanie do premiumCase
                 .user(piotrulo)         // przypisanie do użytkownika
                 .background("Mythical phoenix skin")
                 .age(1)
@@ -158,7 +159,65 @@ public class InitializedData{
         skinService.create(redSkin);
         skinService.create(blueSkin);
 
-        System.out.println(skinService.findAll());
+        List<Skin> all_skins = skinService.findAll();
+        for (Skin skin : all_skins) {
+            System.out.println(skin);
+        }
+
+        Optional<List<Skin>> skin_of_case = skinService.findAllByCase(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123"));
+
+
+        if (skin_of_case.isPresent()) {
+            for (Skin skin : skin_of_case.get()) {
+                System.out.println(skin);
+            }
+        } else {
+            System.out.println("No skins found for the given case.");
+        }
+
+        skinService.addSkinToCase(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123"), blueSkin);
+        System.out.println("po zmianie\n");
+
+        Optional<List<Skin>> skin_of_case_updated = skinService.findAllByCase(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123"));
+
+        if (skin_of_case_updated.isPresent()) {
+            for (Skin skin : skin_of_case_updated.get()) {
+                System.out.println(skin);
+            }
+        } else {
+            System.out.println("No skins found for the given case.");
+        }
+                        System.out.println("po zmianie 2\n");
+
+//        skinService.delete(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4999"));
+//
+//        Optional<List<Skin>> skin_of_case_updated2 = skinService.findAllByCase(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123"));
+//
+//        if (skin_of_case.isPresent()) {
+//            for (Skin skin : skin_of_case_updated2.get()) {
+//                System.out.println(skin);
+//            }
+//        } else {
+//            System.out.println("No skins found for the given case.");
+//        }
+
+                        System.out.println("po zmianie 3\n");
+        caseService.deleteCaseAndUnassignSkins(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123"));
+
+        Optional<List<Skin>> skin_of_case_updated3 = skinService.findAllByCase(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123"));
+
+        if (skin_of_case_updated3.isPresent()) {
+            for (Skin skin : skin_of_case_updated3.get()) {
+                System.out.println(skin);
+            }
+        } else {
+            System.out.println("No skins found for the given case.");
+        }
+
+                List<Skin> all_skins2 = skinService.findAll();
+        for (Skin skin : all_skins2) {
+            System.out.println(skin);
+        }
 
         requestContextController.deactivate();
 

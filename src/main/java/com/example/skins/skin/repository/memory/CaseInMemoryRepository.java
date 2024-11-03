@@ -49,7 +49,7 @@ public class CaseInMemoryRepository implements CaseRepository {
 
     @Override
     public void delete(Case entity) {
-        throw new UnsupportedOperationException("Operation not implemented.");
+        store.deleteCase(entity);
     }
 
     @Override

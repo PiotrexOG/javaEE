@@ -1,5 +1,6 @@
 package com.example.skins.skin.service;
 
+import com.example.skins.skin.entity.Case;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import lombok.NoArgsConstructor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -94,6 +96,9 @@ public class SkinService {
         skinRepository.create(skin);
     }
 
+     public void addSkinToCase(UUID caseId, Skin skin) {
+        skinRepository.addSkinToCase(caseId, skin);
+    }
     /**
      * Updates existing skin.
      *

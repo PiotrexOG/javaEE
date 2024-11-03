@@ -75,6 +75,11 @@ public class SkinInMemoryRepository implements SkinRepository {
     }
 
     @Override
+        public void addSkinToCase(UUID caseId, Skin skin) {
+        store.addSkinToCase(caseId, skin);
+    }
+
+    @Override
     public List<Skin> findAllByCase(Case Case) {
         return store.findAllSkins().stream()
                 .filter(Skin -> Case.equals(Skin.getCaseItem()))

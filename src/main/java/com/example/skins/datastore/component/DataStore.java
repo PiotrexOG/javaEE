@@ -9,10 +9,7 @@ import com.example.skins.skin.entity.Case;
 import com.example.skins.serialization.component.CloningUtility;
 import com.example.skins.user.entity.User;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -131,6 +128,34 @@ public class DataStore {
         if (!Skins.removeIf(Skin -> Skin.getId().equals(id))) {
             throw new IllegalArgumentException("The Skin with id \"%s\" does not exist".formatted(id));
         }
+    }
+
+    public synchronized void deleteCase(Case entity) throws IllegalArgumentException {
+    // Sprawdź, czy skrzynka istnieje w kolekcji
+    if (!Cases.removeIf(c -> c.getId().equals(entity.getId()))) {
+        throw new IllegalArgumentException("The Case with id \"%s\" does not exist".formatted(entity.getId()));
+    }
+
+    // Ustaw pole caseItem na null we wszystkich skinach powiązanych z tą skrzynką
+    Skins.forEach(skin -> {
+        if (skin.getCaseItem() != null && skin.getCaseItem().getId().equals(entity.getId())) {
+            skin.setCaseItem(null);
+        }
+    });
+}
+
+public synchronized void addSkinToCase(UUID caseId, Skin skin) {
+        // Znajdź skrzynkę po ID
+        Case existingCase = Cases.stream()
+                .filter(caseItem -> caseItem.getId().equals(caseId))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("Case not found with id: " + caseId));
+
+        // Przypisz skrzynkę do skina
+        skin.setCaseItem(existingCase);
+
+        // Zaktualizuj skina w DataStore
+        updateSkin(skin);
     }
 
     /**
