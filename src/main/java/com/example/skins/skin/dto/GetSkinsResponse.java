@@ -18,6 +18,7 @@ public class GetSkinsResponse {
     public static class Skin{
         private UUID id;
         private String message;
+        private String name;
     }
 
     private List<Skin> skins;

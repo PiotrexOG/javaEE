@@ -10,15 +10,16 @@ import java.util.function.Function;
 
 public class CaseToModelFunction implements Function<Case, CaseModel> {
     @Override
-    public CaseModel apply(Case gitRepository) {
+    public CaseModel apply(Case aCase) {
         return CaseModel.builder()
-                .id(gitRepository.getId())
-                .name(gitRepository.getName())
-                .skins(Optional.ofNullable(gitRepository.getSkins())
+                .id(aCase.getId())
+                .name(aCase.getName())
+                .skins(Optional.ofNullable(aCase.getSkins())
                         .orElse(new LinkedList<>())
                         .stream()
-                        .map(commit -> GetSkinsResponse.Skin.builder()
-                                .id(commit.getId())
+                        .map(skin -> GetSkinsResponse.Skin.builder()
+                                .id(skin.getId())
+                                .message(skin.getName())
                                 .build())
                         .toList())
                 .build();

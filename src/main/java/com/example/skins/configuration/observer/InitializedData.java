@@ -146,7 +146,7 @@ public class InitializedData{
                 .id(UUID.randomUUID())
                 .name("Blue Phoenix")
                 .floatValue(0.10f)
-                .caseItem(defaultCase)  // przypisanie do premiumCase
+                .caseItem(premiumCase)  // przypisanie do premiumCase
                 .user(piotrulo)         // przypisanie do użytkownika
                 .background("Mythical phoenix skin")
                 .age(1)
@@ -154,7 +154,7 @@ public class InitializedData{
                 .experience(2500)
                 .build();
 
-        defaultCase.setSkins(Arrays.asList(redSkin, blueSkin));
+        //defaultCase.setSkins(Arrays.asList(redSkin, blueSkin));
 
         caseService.create(defaultCase);
         caseService.create(premiumCase);
@@ -162,7 +162,9 @@ public class InitializedData{
         skinService.create(redSkin);
         skinService.create(blueSkin);
 
-
+        System.out.println("halo");
+        System.out.println(skinService.findAllByCase(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123")));
+        System.out.println("halo");
 
         System.out.println(caseService.find(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123")).get().getSkins());
 

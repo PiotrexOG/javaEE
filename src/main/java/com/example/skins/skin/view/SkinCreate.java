@@ -100,21 +100,21 @@ public class SkinCreate implements Serializable {
      * @return Case navigation case
      */
     public String goToCaseAction() {
-        return "/Skin/Skin_create__Case.xhtml?faces-redirect=true";
+        return "/skin/skin_create__Case.xhtml?faces-redirect=true";
     }
 
     /**
      * @return skills navigation case
      */
     public String goToSkillsAction() {
-        return "/Skin/Skin_create__skills.xhtml?faces-redirect=true";
+        return "/skin/skin_create__skills.xhtml?faces-redirect=true";
     }
 
     /**
      * @return portrait navigation case
      */
     public String goToPortraitAction() {
-        return "/Skin/Skin_create__portrait.xhtml?faces-redirect=true";
+        return "/skin/skin_create__portrait.xhtml?faces-redirect=true";
     }
 
     public String resetPortraitAction() {
@@ -126,7 +126,7 @@ public class SkinCreate implements Serializable {
      * @return basic information navigation case
      */
     public Object goToBasicAction() {
-        return "/Skin/Skin_create__basic.xhtml?faces-redirect=true";
+        return "/skin/skin_create__basic.xhtml?faces-redirect=true";
     }
 
     /**
@@ -136,7 +136,7 @@ public class SkinCreate implements Serializable {
      */
     public String cancelAction() {
         conversation.end();
-        return "/Skin/Skin_list.xhtml?faces-redirect=true";
+        return "/skin/skin_list.xhtml?faces-redirect=true";
     }
 
     /**
@@ -148,7 +148,7 @@ public class SkinCreate implements Serializable {
         Skin.setLevel(1);
         Skin.setExperience(0);
         Skin.setHealth(Skin.getConstitution() == null ? 0 : Skin.getConstitution() * 2);
-        return "/Skin/Skin_create__confirm.xhtml?faces-redirect=true";
+        return "/skin/skin_create__confirm.xhtml?faces-redirect=true";
     }
 
     /**
@@ -159,7 +159,7 @@ public class SkinCreate implements Serializable {
     public String saveAction() {
         SkinService.create(factory.modelToSkin().apply(Skin));
         conversation.end();
-        return "/Skin/Skin_list.xhtml?faces-redirect=true";
+        return "/skin/skin_list.xhtml?faces-redirect=true";
     }
 
     /**

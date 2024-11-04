@@ -60,7 +60,7 @@ public class SkinList {
      */
     public String deleteAction(SkinsModel.Skin Skin) {
         service.delete(Skin.getId());
-        return "Skin_list?faces-redirect=true";
+        return "skin_list?faces-redirect=true";
     }
 
 }

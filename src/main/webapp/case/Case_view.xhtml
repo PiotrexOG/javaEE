@@ -39,12 +39,12 @@
                         <h:dataTable value="#{caseView.case_item.skins}" var="skin"
                                      styleClass="table align-middle mb-0 bg-white" headerClass="bg-light">
                             <h:column>
-                                <f:facet name="header">Commit id</f:facet>
+                                <f:facet name="header">Skin id</f:facet>
                                 <h:outputText value="#{skin.id}"/>
                             </h:column>
 
                             <h:column>
-                                <f:facet name="header">Message</f:facet>
+                                <f:facet name="header">Skin name</f:facet>
                                 <h:outputText value="#{skin.message}"/>
                             </h:column>
 
@@ -66,7 +66,7 @@
                                 <f:facet name="header">Delete</f:facet>
                                 <h:form>
                                     <h:commandButton styleClass="btn" value="Delete"
-                                                     action="#{caseView.deleteCommit(skin)}"/>
+                                                     action="#{caseView.deleteSkin(skin)}"/>
                                 </h:form>
                             </h:column>
 

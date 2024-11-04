@@ -10,11 +10,12 @@ import java.util.function.Function;
 public class SkinsToResponseFunction implements Function<List<Skin>, GetSkinsResponse> {
 
     @Override
-    public GetSkinsResponse apply(List<Skin> commits) {
+    public GetSkinsResponse apply(List<Skin> skins) {
         return GetSkinsResponse.builder()
-                .skins(commits.stream()
-                        .map(commit -> GetSkinsResponse.Skin.builder()
-                                .id(commit.getId())
+                .skins(skins.stream()
+                        .map(skin -> GetSkinsResponse.Skin.builder()
+                                .id(skin.getId())
+                                .message("test")
                                 .build())
                         .toList())
                 .build();

@@ -49,7 +49,7 @@ public class CaseInMemoryRepository implements CaseRepository {
 
     @Override
     public void delete(Case entity) {
-        store.deleteCase(entity);
+        store.deleteCase(entity.getId());
     }
 
     @Override

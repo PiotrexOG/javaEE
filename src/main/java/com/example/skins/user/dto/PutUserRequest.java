@@ -50,6 +50,6 @@ public class PutUserRequest {
     private String email;
 
     @Singular
-    private List<Skin> commits;
+    private List<Skin> skins;
 
 }

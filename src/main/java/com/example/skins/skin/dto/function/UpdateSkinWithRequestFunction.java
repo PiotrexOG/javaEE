@@ -8,11 +8,11 @@ import java.util.function.BiFunction;
 
 public class UpdateSkinWithRequestFunction implements BiFunction<Skin, PatchSkinRequest, Skin> {
     @Override
-    public Skin apply(Skin commit, PatchSkinRequest request) {
+    public Skin apply(Skin skin, PatchSkinRequest request) {
         return Skin.builder()
-                .id(commit.getId())
-                .caseItem(commit.getCaseItem())
-                .name(commit.getName())
+                .id(skin.getId())
+                .caseItem(skin.getCaseItem())
+                .name(skin.getName())
                 .build();
     }
 }

@@ -8,12 +8,12 @@ import java.util.function.Function;
 
 public class SkinToResponseFunction implements Function<Skin, GetSkinResponse> {
     @Override
-    public GetSkinResponse apply(Skin commit) {
+    public GetSkinResponse apply(Skin skin) {
         return GetSkinResponse.builder()
-                .id(commit.getId())
+                .id(skin.getId())
                 .Case(GetSkinResponse.Case.builder()
-                        .name(commit.getCaseItem().getName())
-                        .uuid(commit.getCaseItem().getId())
+                        .name(skin.getCaseItem().getName())
+                        .uuid(skin.getCaseItem().getId())
                         .build())
                 .build();
     }

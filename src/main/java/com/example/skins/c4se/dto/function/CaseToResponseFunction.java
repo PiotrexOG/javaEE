@@ -12,15 +12,15 @@ import com.example.skins.user.dto.GetUsersResponse;
 
 public class CaseToResponseFunction implements Function<Case, CaseResponse> {
     @Override
-    public CaseResponse apply(Case gitRepo) {
+    public CaseResponse apply(Case aCase) {
         return CaseResponse.builder()
-                .id(gitRepo.getId())
-                .name(gitRepo.getName())
-                .skins(Optional.ofNullable(gitRepo.getSkins())
+                .id(aCase.getId())
+                .name(aCase.getName())
+                .skins(Optional.ofNullable(aCase.getSkins())
                         .orElse(new LinkedList<>())
                         .stream()
-                        .map(commit -> GetSkinsResponse.Skin.builder()
-                                .id(commit.getId())
+                        .map(skin -> GetSkinsResponse.Skin.builder()
+                                .id(skin.getId())
                                 .build())
                         .toList())
                 .build();

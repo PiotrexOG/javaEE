@@ -76,6 +76,38 @@ public class DataStore {
         Cases.add(cloningUtility.clone(value));
     }
 
+    public synchronized void deleteCase(Case entity) throws IllegalArgumentException {
+        // Sprawdź, czy skrzynka istnieje w kolekcji
+        if (!Cases.removeIf(c -> c.getId().equals(entity.getId()))) {
+            throw new IllegalArgumentException("The Case with id \"%s\" does not exist".formatted(entity.getId()));
+        }
+
+        // Ustaw pole caseItem na null we wszystkich skinach powiązanych z tą skrzynką
+        Skins.forEach(skin -> {
+            if (skin.getCaseItem() != null && skin.getCaseItem().getId().equals(entity.getId())) {
+                skin.setCaseItem(null);
+            }
+        });
+    }
+
+    public synchronized void deleteCase(UUID id) throws IllegalArgumentException {
+        if (!Cases.removeIf(Case -> Case.getId().equals(id))) {
+            throw new IllegalArgumentException("The case with id \"%s\" does not exist".formatted(id));
+        }
+    }
+
+    public synchronized void updateCase(Case value) throws IllegalArgumentException {
+        Case entity = cloneWithRelationships(value);
+        Skins.stream()
+                .filter(skin -> skin.getCaseItem().getId().equals(entity.getId()))
+                .forEach(skin -> skin.setCaseItem(entity));
+        if (Cases.removeIf(Case -> Case.getId().equals(value.getId()))) {
+            Cases.add(entity);
+        } else {
+            throw new IllegalArgumentException("The case with id \"%s\" does not exist".formatted(value.getId()));
+        }
+    }
+
     /**
      * Seeks for all Skins.
      *
@@ -111,11 +143,14 @@ public class DataStore {
      */
     public synchronized void updateSkin(Skin value) throws IllegalArgumentException {
         Skin entity = cloneWithRelationships(value);
-        if (Skins.removeIf(Skin -> Skin.getId().equals(value.getId()))) {
-            Skins.add(entity);
-        } else {
-            throw new IllegalArgumentException("The Skin with id \"%s\" does not exist".formatted(value.getId()));
-        }
+        deleteSkin(value.getId());
+        createSkin(value);
+
+//        if (Skins.removeIf(Skin -> Skin.getId().equals(value.getId()))) {
+//            Skins.add(entity);
+//        } else {
+//            throw new IllegalArgumentException("The Skin with id \"%s\" does not exist".formatted(value.getId()));
+//        }
     }
 
     /**
@@ -125,24 +160,18 @@ public class DataStore {
      * @throws IllegalArgumentException if Skin with provided id does not exist
      */
     public synchronized void deleteSkin(UUID id) throws IllegalArgumentException {
+
+        Cases.forEach(Case -> {
+            Optional.ofNullable(Case.getSkins()).ifPresent(skinsList->
+                    skinsList.removeIf(skin -> skin.getId().equals(id)));
+        });
+
         if (!Skins.removeIf(Skin -> Skin.getId().equals(id))) {
             throw new IllegalArgumentException("The Skin with id \"%s\" does not exist".formatted(id));
         }
     }
 
-    public synchronized void deleteCase(Case entity) throws IllegalArgumentException {
-    // Sprawdź, czy skrzynka istnieje w kolekcji
-    if (!Cases.removeIf(c -> c.getId().equals(entity.getId()))) {
-        throw new IllegalArgumentException("The Case with id \"%s\" does not exist".formatted(entity.getId()));
-    }
 
-    // Ustaw pole caseItem na null we wszystkich skinach powiązanych z tą skrzynką
-    Skins.forEach(skin -> {
-        if (skin.getCaseItem() != null && skin.getCaseItem().getId().equals(entity.getId())) {
-            skin.setCaseItem(null);
-        }
-    });
-}
 
 public synchronized void addSkinToCase(UUID caseId, Skin skin) {
         // Znajdź skrzynkę po ID
@@ -218,11 +247,40 @@ public synchronized void addSkinToCase(UUID caseId, Skin skin) {
                     .orElseThrow(() -> new IllegalArgumentException("No user with id \"%s\".".formatted(value.getUser().getId()))));
         }
 
+//        if (entity.getCaseItem() != null) {
+//            entity.setCaseItem(Cases.stream()
+//                    .filter(Case -> Case.getId().equals(value.getCaseItem().getId()))
+//                    .findFirst()
+//                    .orElseThrow(() -> new IllegalArgumentException("No Case with id \"%s\".".formatted(value.getCaseItem().getId()))));
+//        }
+
         if (entity.getCaseItem() != null) {
-            entity.setCaseItem(Cases.stream()
-                    .filter(Case -> Case.getId().equals(value.getCaseItem().getId()))
+            Case aCase = Cases.stream()
+                    .filter(g -> g.getId().equals(value.getCaseItem().getId()))
                     .findFirst()
-                    .orElseThrow(() -> new IllegalArgumentException("No Case with id \"%s\".".formatted(value.getCaseItem().getId()))));
+                    .orElseThrow(() -> new IllegalArgumentException("The case with id \"%s\" does not exist.".formatted(value.getCaseItem().getId())));
+
+            entity.setCaseItem(aCase);
+
+            if (aCase.getSkins() == null) {
+                aCase.setSkins(new ArrayList<Skin>());
+            }
+            aCase.getSkins().add(entity);
+
+        }
+
+        return entity;
+    }
+
+    private Case cloneWithRelationships(Case value) {
+        Case entity = cloningUtility.clone(value);
+
+        if(null == entity.getSkins()){
+            entity.setSkins(new LinkedList<>());
+        }
+
+        if (value.getSkins() != null) {
+            entity.setSkins(Skins.stream().filter(skin -> skin.getCaseItem().getId().equals(value.getId())).toList());
         }
 
         return entity;

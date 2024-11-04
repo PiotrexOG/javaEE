@@ -10,9 +10,9 @@ import java.util.function.Function;
 public class CasesToResponseFunction implements Function<List<Case>, CasesResponse> {
 
     @Override
-    public CasesResponse apply(List<Case> gitRepos) {
+    public CasesResponse apply(List<Case> Cases) {
         return CasesResponse.builder()
-                .cases(gitRepos.stream()
+                .cases(Cases.stream()
                         .map(Case -> CasesResponse.Case.builder()
                                 .id(Case.getId())
                                 .name(Case.getName())

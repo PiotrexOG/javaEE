@@ -18,7 +18,7 @@ import java.util.Optional;
 public class CaseList {
     private final CaseService service;
     private final SkinService skinService;
-    private CasesModel gitRepos;
+    private CasesModel Cases;
 
     private final ModelFunctionFactory factory;
 
@@ -30,18 +30,26 @@ public class CaseList {
     }
 
     public CasesModel getCases() {
-        if (null == gitRepos) {
-            gitRepos = factory.CasesToModel().apply(service.findAll());
+        if (null == Cases) {
+            Cases = factory.CasesToModel().apply(service.findAll());
         }
-        return gitRepos;
+        return Cases;
     }
 
     public String deleteAction(CasesResponse.Case repo) {
-        skinService.findAllByCase(repo.getId()).ifPresent(commits ->
-                commits.forEach(commit -> skinService.delete(commit.getId())));
+        System.out.println(skinService.findAllByCase(repo.getId()));
+
+
+
+        skinService.findAllByCase(repo.getId()).ifPresent(skins ->
+                skins.forEach(skin -> System.out.println(skin.getName())));
+
+        skinService.findAllByCase(repo.getId()).ifPresent(skins ->
+                skins.forEach(skin -> skinService.delete(skin.getId())));
+        System.out.println(skinService.findAll());
         Optional<Case> foundRepo = service.find(repo.getId());
         foundRepo.ifPresent(service::delete);
-        return "gitRepo_list?faces-redirect=true";
+        return "Case_list?faces-redirect=true";
     }
 
 

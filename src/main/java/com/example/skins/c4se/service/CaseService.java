@@ -32,14 +32,14 @@ public class CaseService {
         this.case_repository = case_repository;
     }
 
-    public void delete(UUID caseId) {
-        // Znajdź skrzynkę po jej ID
-        Case existingCase = case_repository.find(caseId)
-                .orElseThrow(() -> new NoSuchElementException("Case not found with id: " + caseId));
-
-        // Usuń skrzynkę z repozytorium
-        case_repository.delete(existingCase);
-    }
+//    public void delete(UUID caseId) {
+//        // Znajdź skrzynkę po jej ID
+//        Case existingCase = case_repository.find(caseId)
+//                .orElseThrow(() -> new NoSuchElementException("Case not found with id: " + caseId));
+//
+//        // Usuń skrzynkę z repozytorium
+//        case_repository.delete(existingCase);
+//    }
 
     public void delete(Case caseItem) {
         // Usuń skrzynkę z repozytorium

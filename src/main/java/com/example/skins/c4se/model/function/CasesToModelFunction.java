@@ -10,12 +10,12 @@ import java.util.function.Function;
 
 public class CasesToModelFunction implements Function<List<Case>, CasesModel> {
     @Override
-    public CasesModel apply(List<Case> gitRepositories) {
+    public CasesModel apply(List<Case> Cases) {
         return CasesModel.builder()
-                .cases(gitRepositories.stream()
-                        .map(gitRepo -> CasesResponse.Case.builder()
-                                .id(gitRepo.getId())
-                                .name(gitRepo.getName())
+                .cases(Cases.stream()
+                        .map(Case -> CasesResponse.Case.builder()
+                                .id(Case.getId())
+                                .name(Case.getName())
                                 .build())
                         .toList())
                 .build();

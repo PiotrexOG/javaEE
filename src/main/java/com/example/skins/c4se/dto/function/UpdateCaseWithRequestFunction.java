@@ -6,9 +6,9 @@ import java.util.function.BiFunction;
 
 public class UpdateCaseWithRequestFunction implements BiFunction<Case, PatchCaseRequest, Case> {
     @Override
-    public Case apply(Case gitRepository, PatchCaseRequest patchCaseRequest) {
+    public Case apply(Case aCase, PatchCaseRequest patchCaseRequest) {
         return Case.builder()
-                .id(gitRepository.getId())
+                .id(aCase.getId())
                 .name(patchCaseRequest.getName())
                 .build();
     }
