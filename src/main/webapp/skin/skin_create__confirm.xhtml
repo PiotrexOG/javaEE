@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:f="jakarta.faces.core"
+                template="/WEB-INF/template/main.xhtml">
+
+    <f:metadata>
+        <f:viewAction action="#{skinCreate.init()}"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <article>
+            <header><h2>Create skin - basic information</h2></header>
+            <h:form styleClass="container" onreset="onReset()" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-2 p-2 text-center">
+                        <h:commandButton styleClass="btn" value="Previous" immediate="true"
+                                         action="#{skinCreate.goToPortraitAction()}"/>
+                    </div>
+                    <div class="col-2 p-2 text-center">
+                        <h:button styleClass="btn" value="Next" disabled="true"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-4">
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                Level &amp; Profession
+                            </div>
+                            <div class="col-6">
+                                <h:outputText value="#{skinCreate.skin.profession.name}"/>
+                                level
+                                <h:outputText value="#{skinCreate.skin.level}"/>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                Experience
+                            </div>
+                            <div class="col-6">
+                                <h:outputText value="#{skinCreate.skin.experience}"/>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                Life
+                            </div>
+                            <div class="col-6">
+                                <h:outputText value="#{skinCreate.skin.health}"/>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                Strength
+                            </div>
+                            <div class="col-6">
+                                <h:outputText value="#{skinCreate.skin.strength}"/>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                Constitution
+                            </div>
+                            <div class="col-6">
+                                <h:outputText value="#{skinCreate.skin.constitution}"/>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                Charisma
+                            </div>
+                            <div class="col-6">
+                                <h:outputText value="#{skinCreate.skin.charisma}"/>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                Age
+                            </div>
+                            <div class="col-6">
+                                <h:outputText value="#{skinCreate.skin.age}"/>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                Background
+                            </div>
+                            <div class="col-6">
+                                <h:outputText value="#{skinCreate.skin.background}"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-3">
+                        <h:graphicImage alt="Character portrait"
+                                        rendered="#{skinCreate.skin.portrait != null}"
+                                        value="#{skinCreate.skinPortraitUrl}"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-2 p-2 text-center">
+                        <h:commandButton styleClass="btn btn-primary" value="Create"
+                                         action="#{skinCreate.saveAction()}"/>
+                    </div>
+                    <div class="col-2 p-2 text-center">
+                        <h:commandButton styleClass="btn btn-secondary" value="Cancel"
+                                         action="#{skinCreate.cancelAction()}"/>
+                    </div>
+                </div>
+            </h:form>
+        </article>
+    </ui:define>
+
+</ui:composition>

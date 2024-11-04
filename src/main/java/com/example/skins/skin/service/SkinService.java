@@ -1,21 +1,15 @@
 package com.example.skins.skin.service;
 
-import com.example.skins.skin.entity.Case;
+import com.example.skins.c4se.repository.api.CaseRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.NoArgsConstructor;
 import com.example.skins.skin.repository.api.SkinRepository;
-import com.example.skins.skin.repository.api.CaseRepository;
 import com.example.skins.skin.entity.Skin;
 import com.example.skins.user.entity.User;
 import com.example.skins.user.repository.api.UserRepository;
-import jakarta.enterprise.context.ApplicationScoped;
-import lombok.NoArgsConstructor;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 

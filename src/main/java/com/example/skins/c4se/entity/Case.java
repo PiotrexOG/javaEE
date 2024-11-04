@@ -1,11 +1,11 @@
-package com.example.skins.skin.entity;
+package com.example.skins.c4se.entity;
 
+import com.example.skins.skin.entity.Skin;
 import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -17,8 +17,6 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@ToString
-@EqualsAndHashCode
 public class Case implements Serializable {
 
     /**
@@ -38,7 +36,8 @@ public class Case implements Serializable {
 
     private Integer seriesId;
 
-    @Singular
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private List<Skin> skins;
 
 

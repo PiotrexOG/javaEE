@@ -1,7 +1,6 @@
 package com.example.skins.component;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import com.example.skins.skin.entity.Case;
 import com.example.skins.user.dto.GetUserResponse;
 import com.example.skins.user.dto.GetUsersResponse;
 import com.example.skins.user.dto.PutUserRequest;

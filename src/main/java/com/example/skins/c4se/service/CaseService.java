@@ -1,12 +1,12 @@
-package com.example.skins.skin.service;
+package com.example.skins.c4se.service;
 
-import com.example.skins.skin.entity.Skin;
+import com.example.skins.c4se.entity.Case;
+import com.example.skins.c4se.repository.api.CaseRepository;
 import com.example.skins.skin.repository.api.SkinRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.NoArgsConstructor;
-import com.example.skins.skin.repository.api.CaseRepository;
-import com.example.skins.skin.entity.Case;
+
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -23,25 +23,27 @@ public class CaseService {
      * Repository for case entity.
      */
     private final CaseRepository case_repository;
-    private final SkinRepository skin_repository;
 
     /**
      * @param case_repository repository for case entity
-     * @param skin_repository repository for case entity
      */
     @Inject
-    public CaseService(CaseRepository case_repository, SkinRepository skin_repository) {
+    public CaseService(CaseRepository case_repository) {
         this.case_repository = case_repository;
-        this.skin_repository = skin_repository;
     }
 
-    public void deleteCaseAndUnassignSkins(UUID caseId) {
+    public void delete(UUID caseId) {
         // Znajdź skrzynkę po jej ID
         Case existingCase = case_repository.find(caseId)
                 .orElseThrow(() -> new NoSuchElementException("Case not found with id: " + caseId));
 
         // Usuń skrzynkę z repozytorium
         case_repository.delete(existingCase);
+    }
+
+    public void delete(Case caseItem) {
+        // Usuń skrzynkę z repozytorium
+        case_repository.delete(caseItem);
     }
 
     /**

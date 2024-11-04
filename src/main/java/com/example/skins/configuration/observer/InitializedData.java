@@ -1,7 +1,8 @@
 package com.example.skins.configuration.observer;
 
+import com.example.skins.c4se.entity.Case;
 import com.example.skins.skin.entity.Skin;
-import com.example.skins.skin.service.CaseService;
+import com.example.skins.c4se.service.CaseService;
 import com.example.skins.skin.service.SkinService;
 import com.example.skins.user.entity.SkillGroup;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -10,15 +11,13 @@ import jakarta.enterprise.context.control.RequestContextController;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import lombok.SneakyThrows;
-import com.example.skins.skin.entity.Case;
-import com.example.skins.skin.entity.Skill;
 
 import com.example.skins.user.entity.User;
-import com.example.skins.user.entity.UserRoles;
 import com.example.skins.user.service.UserService;
 
 import java.io.InputStream;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -128,8 +127,7 @@ public class InitializedData{
                 .seriesId(2)
                 .build();
 
-        caseService.create(defaultCase);
-        caseService.create(premiumCase);
+
 
         // Tworzenie Skinów i przypisanie ich do Case'ów oraz użytkownika
         Skin redSkin = Skin.builder()
@@ -148,7 +146,7 @@ public class InitializedData{
                 .id(UUID.randomUUID())
                 .name("Blue Phoenix")
                 .floatValue(0.10f)
-             //   .caseItem(premiumCase)  // przypisanie do premiumCase
+                .caseItem(defaultCase)  // przypisanie do premiumCase
                 .user(piotrulo)         // przypisanie do użytkownika
                 .background("Mythical phoenix skin")
                 .age(1)
@@ -156,38 +154,47 @@ public class InitializedData{
                 .experience(2500)
                 .build();
 
+        defaultCase.setSkins(Arrays.asList(redSkin, blueSkin));
+
+        caseService.create(defaultCase);
+        caseService.create(premiumCase);
+
         skinService.create(redSkin);
         skinService.create(blueSkin);
 
-        List<Skin> all_skins = skinService.findAll();
-        for (Skin skin : all_skins) {
-            System.out.println(skin);
-        }
-
-        Optional<List<Skin>> skin_of_case = skinService.findAllByCase(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123"));
 
 
-        if (skin_of_case.isPresent()) {
-            for (Skin skin : skin_of_case.get()) {
-                System.out.println(skin);
-            }
-        } else {
-            System.out.println("No skins found for the given case.");
-        }
+        System.out.println(caseService.find(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123")).get().getSkins());
 
-        skinService.addSkinToCase(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123"), blueSkin);
-        System.out.println("po zmianie\n");
-
-        Optional<List<Skin>> skin_of_case_updated = skinService.findAllByCase(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123"));
-
-        if (skin_of_case_updated.isPresent()) {
-            for (Skin skin : skin_of_case_updated.get()) {
-                System.out.println(skin);
-            }
-        } else {
-            System.out.println("No skins found for the given case.");
-        }
-                        System.out.println("po zmianie 2\n");
+//        List<Skin> all_skins = skinService.findAll();
+//        for (Skin skin : all_skins) {
+//            System.out.println(skin);
+//        }
+//
+//        Optional<List<Skin>> skin_of_case = skinService.findAllByCase(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123"));
+//
+//
+//        if (skin_of_case.isPresent()) {
+//            for (Skin skin : skin_of_case.get()) {
+//                System.out.println(skin);
+//            }
+//        } else {
+//            System.out.println("No skins found for the given case.");
+//        }
+//
+//        skinService.addSkinToCase(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123"), blueSkin);
+//        System.out.println("po zmianie\n");
+//
+//        Optional<List<Skin>> skin_of_case_updated = skinService.findAllByCase(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123"));
+//
+//        if (skin_of_case_updated.isPresent()) {
+//            for (Skin skin : skin_of_case_updated.get()) {
+//                System.out.println(skin);
+//            }
+//        } else {
+//            System.out.println("No skins found for the given case.");
+//        }
+//                        System.out.println("po zmianie 2\n");
 
 //        skinService.delete(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4999"));
 //
@@ -201,23 +208,23 @@ public class InitializedData{
 //            System.out.println("No skins found for the given case.");
 //        }
 
-                        System.out.println("po zmianie 3\n");
-        caseService.deleteCaseAndUnassignSkins(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123"));
-
-        Optional<List<Skin>> skin_of_case_updated3 = skinService.findAllByCase(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123"));
-
-        if (skin_of_case_updated3.isPresent()) {
-            for (Skin skin : skin_of_case_updated3.get()) {
-                System.out.println(skin);
-            }
-        } else {
-            System.out.println("No skins found for the given case.");
-        }
-
-                List<Skin> all_skins2 = skinService.findAll();
-        for (Skin skin : all_skins2) {
-            System.out.println(skin);
-        }
+//                        System.out.println("po zmianie 3\n");
+//        caseService.deleteCaseAndUnassignSkins(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123"));
+//
+//        Optional<List<Skin>> skin_of_case_updated3 = skinService.findAllByCase(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123"));
+//
+//        if (skin_of_case_updated3.isPresent()) {
+//            for (Skin skin : skin_of_case_updated3.get()) {
+//                System.out.println(skin);
+//            }
+//        } else {
+//            System.out.println("No skins found for the given case.");
+//        }
+//
+//                List<Skin> all_skins2 = skinService.findAll();
+//        for (Skin skin : all_skins2) {
+//            System.out.println(skin);
+//        }
 
         requestContextController.deactivate();
 

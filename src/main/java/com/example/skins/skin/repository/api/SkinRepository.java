@@ -1,6 +1,6 @@
 package com.example.skins.skin.repository.api;
 
-import com.example.skins.skin.entity.Case;
+import com.example.skins.c4se.entity.Case;
 import com.example.skins.repository.api.Repository;
 import com.example.skins.skin.entity.Skin;
 import com.example.skins.user.entity.User;

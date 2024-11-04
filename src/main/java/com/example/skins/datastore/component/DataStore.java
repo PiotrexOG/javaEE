@@ -1,11 +1,11 @@
 package com.example.skins.datastore.component;
 
+import com.example.skins.c4se.entity.Case;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.NoArgsConstructor;
 import com.example.skins.skin.entity.Skin;
 import lombok.extern.java.Log;
-import com.example.skins.skin.entity.Case;
 import com.example.skins.serialization.component.CloningUtility;
 import com.example.skins.user.entity.User;
 

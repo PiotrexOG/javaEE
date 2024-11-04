@@ -1,5 +1,6 @@
 package com.example.skins.skin.entity;
 
+import com.example.skins.c4se.entity.Case;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import com.example.skins.user.entity.User;
