@@ -32,51 +32,9 @@ public class SkinCreateModel {
     /**
      * Skin's background story.
      */
-    private String background;
+    private Float floatValue;
 
-    /**
-     * Skin's age.
-     */
-    private Integer age;
 
-    /**
-     * Skin's strength.
-     */
-    private Integer strength;
-
-    /**
-     * Skin's constitution.
-     */
-    private Integer constitution;
-
-    /**
-     * Skin's charisma.
-     */
-    private Integer charisma;
-
-    /**
-     * Skin's health.
-     */
-    private Integer health;
-
-    /**
-     * Skin's level.
-     */
-    private Integer level;
-
-    /**
-     * Skin's total experience.
-     */
-    private Integer experience;
-
-    /**
-     * Multipart part for uploaded portrait file.
-     */
-    private Part portrait;
-
-    /**
-     * Skin's Case.
-     */
-    private CaseModel Case;
+    private CaseModel acase;
 
 }

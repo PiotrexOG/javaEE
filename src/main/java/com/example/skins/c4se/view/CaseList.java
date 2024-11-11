@@ -39,7 +39,7 @@ public class CaseList {
     public String deleteAction(CasesResponse.Case repo) {
         System.out.println(skinService.findAllByCase(repo.getId()));
 
-
+        //todo
 
         skinService.findAllByCase(repo.getId()).ifPresent(skins ->
                 skins.forEach(skin -> System.out.println(skin.getName())));

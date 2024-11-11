@@ -13,8 +13,10 @@ public class RequestToSkinFunction implements BiFunction<UUID, PutSkinRequest, S
     public Skin apply(UUID uuid, PutSkinRequest request) {
         return Skin.builder()
                 .id(uuid)
+                .name(request.getName())
+                .floatValue(request.getFloatValue())
                 .caseItem(Case.builder()
-                        .id(request.getRepoId())
+                        .id(request.getCaseId())
                         .build())
                 .build();
     }

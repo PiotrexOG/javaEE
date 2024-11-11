@@ -78,8 +78,10 @@ public class SkinEdit implements Serializable {
      */
     public String saveAction() {
         service.update(factory.updateSkin().apply(service.find(id).orElseThrow(), Skin));
-        String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
-        return viewId + "?faces-redirect=true&includeViewParams=true";
+//        String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
+//        return viewId + "?faces-redirect=true&includeViewParams=true";
+
+        return "/skin/skin_list.xhtml?faces-redirect=true";
     }
 
 }

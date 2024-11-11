@@ -17,7 +17,7 @@ public class GetSkinsResponse {
     @NoArgsConstructor
     public static class Skin{
         private UUID id;
-        private String message;
+        private Float floatValue;
         private String name;
     }
 

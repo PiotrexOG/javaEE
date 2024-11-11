@@ -21,6 +21,7 @@ public class CaseToResponseFunction implements Function<Case, CaseResponse> {
                         .stream()
                         .map(skin -> GetSkinsResponse.Skin.builder()
                                 .id(skin.getId())
+                                .name(skin.getName())
                                 .build())
                         .toList())
                 .build();

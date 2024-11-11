@@ -4,8 +4,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.NoArgsConstructor;
 
-import com.example.skins.controller.servlet.exception.AlreadyExistsException;
-import com.example.skins.controller.servlet.exception.NotFoundException;
 import com.example.skins.crypto.component.Pbkdf2PasswordHash;
 import com.example.skins.user.entity.User;
 import com.example.skins.user.repository.api.UserRepository;
@@ -103,9 +101,10 @@ public class UserService {
                 Path existingPath = Path.of(path, id.toString() + ".png");
                 if (Files.exists(existingPath)) {
                     Files.copy(is, existingPath, StandardCopyOption.REPLACE_EXISTING);
-                } else {
-                    throw new NotFoundException("User avatar not found, use PUT instead.");
                 }
+//                else {
+//                    throw new NotFoundException("User avatar not found, use PUT instead.");
+//                }
             } catch (IOException ex) {
                 throw new IllegalStateException(ex);
             }
@@ -116,9 +115,9 @@ public class UserService {
         repository.find(id).ifPresent(user -> {
             try {
                 Path destinationPath = Path.of(path, id.toString() + ".png");
-                if (Files.exists(destinationPath)) {
-                    throw new AlreadyExistsException("Avatar already exists, use PATCH instead.");
-                }
+//                if (Files.exists(destinationPath)) {
+//                    throw new AlreadyExistsException("Avatar already exists, use PATCH instead.");
+//                }
                 Files.copy(is, destinationPath);
             } catch (IOException ex) {
                 throw new IllegalStateException(ex);

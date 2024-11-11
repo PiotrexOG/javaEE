@@ -22,46 +22,9 @@ public class SkinModel {
     /**
      * Skin's background story.
      */
-    private String background;
+    private Float floatValue;
 
-    /**
-     * Skin's age.
-     */
-    private int age;
 
-    /**
-     * Skin's strength.
-     */
-    private int strength;
-
-    /**
-     * Skin's constitution.
-     */
-    private int constitution;
-
-    /**
-     * Skin's charisma.
-     */
-    private int charisma;
-
-    /**
-     * Skin's health.
-     */
-    private int health;
-
-    /**
-     * Skin's level.
-     */
-    private int level;
-
-    /**
-     * Skin's total experience.
-     */
-    private int experience;
-
-    /**
-     * Name of the Skin's Case.
-     */
-    private String Case;
+    private String acase;
 
 }

@@ -15,8 +15,7 @@ public class SkinToEditModelFunction implements Function<Skin, SkinEditModel>, S
     public SkinEditModel apply(Skin entity) {
         return SkinEditModel.builder()
                 .name(entity.getName())
-                .age(entity.getAge())
-                .background(entity.getBackground())
+                .floatValue(entity.getFloatValue())
                 .build();
     }
 

@@ -10,9 +10,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class PutSkinRequest {
-    private LocalDateTime timestamp;
-    private String message;
-    private int filesChangedCount;
-    private UUID authorId;
-    private UUID repoId;
+    private String name;
+    private float floatValue;
+    private UUID userId;
+    private UUID caseId;
 }

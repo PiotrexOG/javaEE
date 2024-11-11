@@ -3,9 +3,6 @@ package com.example.skins.user.controller.simple;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import com.example.skins.component.DtoFunctionFactory;
-import com.example.skins.controller.servlet.exception.NotFoundException;
-import com.example.skins.controller.servlet.exception.BadRequestException;
-import com.example.skins.controller.servlet.exception.HttpRequestException;
 import com.example.skins.user.controller.api.UserController;
 import com.example.skins.user.dto.GetUserResponse;
 import com.example.skins.user.dto.GetUsersResponse;
@@ -55,15 +52,16 @@ public class UserSimpleController implements UserController {
 
     @Override
     public GetUserResponse getUser(UUID id) {
-        return service.find(id).map(factory.userToResponse()).orElseThrow(NotFoundException::new);
+        return service.find(id).map(factory.userToResponse()).orElse(null);
+//                .orElseThrow(NotFoundException::new);
     }
 
     @Override
     public GetUsersResponse getUsers() {
         List<User> users = service.findAll();
-        if (users.isEmpty()) {
-            throw new NotFoundException();
-        }
+//        if (users.isEmpty()) {
+//            throw new NotFoundException();
+//        }
         return factory.usersToResponse().apply(users);
     }
 
@@ -71,19 +69,19 @@ public class UserSimpleController implements UserController {
     public void putUser(UUID id, PutUserRequest request) {
         Optional<User> user = service.find(id);
         if(user.isPresent()){
-            throw new BadRequestException("User with id " + id + " already exists");
+//            throw new BadRequestException("User with id " + id + " already exists");
         }
         try {
             service.create(factory.requestToUser().apply(id, request));
         } catch (IllegalArgumentException ex) {
-            throw new BadRequestException();
+//            throw new BadRequestException();
         }
     }
 
     @Override
     public void patchUser(UUID id, PatchUserRequest request) {
         service.find(id).ifPresentOrElse(user -> service.update(factory.updateUser().apply(user, request)), () -> {
-            throw new NotFoundException();
+//            throw new NotFoundException();
         });
     }
 
@@ -92,7 +90,7 @@ public class UserSimpleController implements UserController {
         service.find(id).ifPresentOrElse(
                 service::delete,
                 ()->{
-                    throw new NotFoundException();
+//                    throw new NotFoundException();
                 }
         );
     }
@@ -103,12 +101,12 @@ public class UserSimpleController implements UserController {
                 path,
                 service.find(id)
                         .map(user -> user.getId().toString())
-                        .orElseThrow(() -> new NotFoundException("User does not exist"))
+//                        .orElseThrow(() -> new NotFoundException("User does not exist"))
                         + ".png"
         );
         try {
             if (!Files.exists(pathToAvatar)) {
-                throw new NotFoundException("User avatar does not exist");
+//                throw new NotFoundException("User avatar does not exist");
             }
             return Files.readAllBytes(pathToAvatar);
         } catch (IOException e) {
@@ -123,7 +121,7 @@ public class UserSimpleController implements UserController {
                     service.createAvatar(id, avatar, path);
                 },
                 () -> {
-                    throw new NotFoundException();
+//                    throw new NotFoundException();
                 }
         );
     }
@@ -133,7 +131,7 @@ public class UserSimpleController implements UserController {
         service.find(id).ifPresentOrElse(
                 user -> service.updateAvatar(id, avatar, path),
                 () -> {
-                    throw new NotFoundException("User does not exist");
+//                    throw new NotFoundException("User does not exist");
                 }
         );
     }
@@ -145,15 +143,15 @@ public class UserSimpleController implements UserController {
                     try {
                         Path avatarPath = Paths.get(path, user.getId().toString() + ".png");
                         if (!Files.exists(avatarPath)) {
-                            throw new NotFoundException("User avatar does not exist");
+//                            throw new NotFoundException("User avatar does not exist");
                         }
                         Files.delete(avatarPath);
                     } catch (IOException e) {
-                        throw new NotFoundException(e);
+//                        throw new NotFoundException(e);
                     }
                 },
                 () -> {
-                    throw new NotFoundException("User does not exist");
+//                    throw new NotFoundException("User does not exist");
                 }
         );
     }

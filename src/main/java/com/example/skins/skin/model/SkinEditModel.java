@@ -24,16 +24,7 @@ public class SkinEditModel {
     /**
      * Skin's background story.
      */
-    private String background;
+    private Float floatValue;
 
-    /**
-     * Skin's age.
-     */
-    private int age;
-
-    /**
-     * Multipart part for uploaded portrait file.
-     */
-    private Part portrait;
 
 }

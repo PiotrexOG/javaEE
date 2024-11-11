@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class PatchSkinRequest {
-    private String Message;
-    private LocalDateTime timestamp;
-    private int filesChangedCount;
+    private String name;
+    private float floatValue;
 }

@@ -1,9 +1,20 @@
 package com.example.skins.component;
 
+import com.example.skins.skin.dto.function.SkinToResponseFunction;
+import com.example.skins.skin.dto.function.SkinsToResponseFunction;
+import com.example.skins.skin.dto.function.RequestToSkinFunction;
+import com.example.skins.skin.dto.function.UpdateSkinWithRequestFunction;
+
+import com.example.skins.c4se.dto.function.CasesToResponseFunction;
+import com.example.skins.c4se.dto.function.CaseToResponseFunction;
+import com.example.skins.c4se.dto.function.RequestToCase;
+import com.example.skins.c4se.dto.function.UpdateCaseWithRequestFunction;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import com.example.skins.user.dto.GetUserResponse;
 import com.example.skins.user.dto.GetUsersResponse;
 import com.example.skins.user.dto.PutUserRequest;
+
 import com.example.skins.user.dto.function.*;
 import com.example.skins.user.entity.User;
 
@@ -59,6 +70,38 @@ public class DtoFunctionFactory {
      */
     public UserToResponseFunction userToResponse() {
         return new UserToResponseFunction();
+    }
+    
+    public SkinToResponseFunction skinToResponse() {
+        return new SkinToResponseFunction();
+    }
+
+    public SkinsToResponseFunction skinsToResponse() {
+        return new SkinsToResponseFunction();
+    }
+
+    public RequestToSkinFunction requestToSkin() {
+        return new RequestToSkinFunction();
+    }
+
+    public UpdateSkinWithRequestFunction updateSkinWithRequestFunction() {
+        return new UpdateSkinWithRequestFunction();
+    }
+
+    public CaseToResponseFunction caseToResponse() {
+        return new CaseToResponseFunction();
+    }
+
+    public CasesToResponseFunction casesToResponse() {
+        return new CasesToResponseFunction();
+    }
+
+    public RequestToCase requestToCase() {
+        return new RequestToCase();
+    }
+
+    public UpdateCaseWithRequestFunction updateCaseWithRequest() {
+        return new UpdateCaseWithRequestFunction();
     }
 
 }

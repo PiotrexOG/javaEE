@@ -20,24 +20,12 @@
             <div class="container">
                 <div class="row">
                     <div class="col-4">
-                        <div class="row mb-2">
-                            <div class="col-6">
-                                Creation date
-                            </div>
-                            <div class="col-6">
-                                <h:outputText value="#{caseView.case_item.creationDate}"/>
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-6">
-                                Visibility
-                            </div>
-                            <div class="col-6">
-                                <h:outputText value="#{caseView.case_item.visibility}"/>
-                            </div>
-                        </div>
+
                         <h:dataTable value="#{caseView.case_item.skins}" var="skin"
                                      styleClass="table align-middle mb-0 bg-white" headerClass="bg-light">
+
+
+
                             <h:column>
                                 <f:facet name="header">Skin id</f:facet>
                                 <h:outputText value="#{skin.id}"/>
@@ -45,7 +33,12 @@
 
                             <h:column>
                                 <f:facet name="header">Skin name</f:facet>
-                                <h:outputText value="#{skin.message}"/>
+                                <h:outputText value="#{skin.name}"/>
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">Skin float</f:facet>
+                                <h:outputText value="#{skin.floatValue}"/>
                             </h:column>
 
                             <h:column>

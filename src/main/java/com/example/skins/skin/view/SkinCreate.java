@@ -117,10 +117,6 @@ public class SkinCreate implements Serializable {
         return "/skin/skin_create__portrait.xhtml?faces-redirect=true";
     }
 
-    public String resetPortraitAction() {
-        Skin.setPortrait(null);
-        return goToPortraitAction();
-    }
 
     /**
      * @return basic information navigation case
@@ -145,9 +141,8 @@ public class SkinCreate implements Serializable {
      * @return confirmation navigation case
      */
     public String goToConfirmAction() {
-        Skin.setLevel(1);
-        Skin.setExperience(0);
-        Skin.setHealth(Skin.getConstitution() == null ? 0 : Skin.getConstitution() * 2);
+//        Skin.setName(Skin.getName());
+//        Skin.setFloatValue(Skin.getFloatValue());
         return "/skin/skin_create__confirm.xhtml?faces-redirect=true";
     }
 

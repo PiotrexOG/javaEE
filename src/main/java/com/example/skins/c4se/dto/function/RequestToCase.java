@@ -12,6 +12,8 @@ public class RequestToCase implements BiFunction<UUID, PutCaseRequest, Case> {
         return Case.builder()
                 .id(uuid)
                 .name(putCaseRequest.getName())
+                .releaseDate(putCaseRequest.getCreationDate())
+                .seriesId(putCaseRequest.getSeriesId())
                 .build();
     }
 }

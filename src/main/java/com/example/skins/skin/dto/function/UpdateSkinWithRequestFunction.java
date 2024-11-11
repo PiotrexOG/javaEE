@@ -12,7 +12,8 @@ public class UpdateSkinWithRequestFunction implements BiFunction<Skin, PatchSkin
         return Skin.builder()
                 .id(skin.getId())
                 .caseItem(skin.getCaseItem())
-                .name(skin.getName())
+                .name(request.getName())
+                .floatValue(request.getFloatValue())
                 .build();
     }
 }

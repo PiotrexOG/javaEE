@@ -13,4 +13,5 @@ public class PutCaseRequest {
     private String name;
     private LocalDate creationDate;
     private UUID ownerId;
+    private Integer seriesId;
 }

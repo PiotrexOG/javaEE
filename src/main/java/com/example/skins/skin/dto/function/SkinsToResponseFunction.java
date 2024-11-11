@@ -15,7 +15,8 @@ public class SkinsToResponseFunction implements Function<List<Skin>, GetSkinsRes
                 .skins(skins.stream()
                         .map(skin -> GetSkinsResponse.Skin.builder()
                                 .id(skin.getId())
-                                .message("test")
+                                .name(skin.getName())
+                                .floatValue(skin.getFloatValue())
                                 .build())
                         .toList())
                 .build();

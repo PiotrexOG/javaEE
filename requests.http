@@ -79,3 +79,116 @@ Content-Disposition: form-data; name="avatar"; filename="zereni.png'
 ###
 
 DELETE http://localhost:9080/cs-go/api/users/c4804e0f-769e-4ab9-9ebe-0578fb4f00a6/avatar
+
+
+###
+
+
+GET http://localhost:9080/cs-go/api/cases
+
+###
+
+GET http://localhost:9080/cs-go/api/cases/ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123
+
+###
+
+GET http://localhost:9080/cs-go/api/cases/ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123/skins
+
+###
+
+PUT http://localhost:9080/cs-go/api/cases/ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123/skins/ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4771
+Content-Type:  application/json
+
+{
+    "name": "black dragon",
+    "floatValue": "0.6"
+}
+
+###
+
+GET http://localhost:9080/cs-go/api/cases/ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123/skins/ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4999
+
+###
+
+PUT http://localhost:9080/cs-go/api/cases/ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4125
+Content-Type: application/json
+
+{
+  "name": "new-test-case",
+  "creationDate": "2024-10-21",
+  "ownerId": "c195b6a2-5966-4dd0-a790-5b160d34179f",
+  "seriesID": "23"
+}
+
+###
+
+PUT http://localhost:9080/cs-go/api/cases/ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4125/skins/ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4111
+Content-Type:  application/json
+
+{
+    "name": "gren dragon",
+    "floatValue": "0.6"
+}
+
+###
+
+GET http://localhost:9080/cs-go/api/cases/ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4125
+
+###
+
+PATCH http://localhost:9080/cs-go/api/cases/ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4125
+Content-Type: application/json
+
+{
+  "name": "more_new-test-case"
+}
+
+###
+
+GET http://localhost:9080/cs-go/api/skins
+
+###
+
+GET http://localhost:9080/cs-go/api/skins/ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4998
+
+###
+
+GET http://localhost:9080/cs-go/api/cases/ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4125/skins
+
+###
+
+PUT http://localhost:9080/cs-go/api/skins/ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4888
+Content-Type:  application/json
+
+{
+    "name": "yellow dragon",
+    "floatValue": "0.6",
+    "caseId": "ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4125"
+}
+
+
+###
+
+PATCH http://localhost:9080/cs-go/api/skins/ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4888
+Content-Type: application/json
+
+{
+    "name": "yellow cobra",
+    "floatValue": "0.1"
+}
+
+###
+
+DELETE http://localhost:9080/cs-go/api/skins/ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4888
+
+###
+
+DELETE http://localhost:9080/cs-go/api/cases/ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4124
+
+
+
+###
+
+GET http://localhost:9080/cs-go/api/cases/ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123
+
+
