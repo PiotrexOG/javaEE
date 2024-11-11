@@ -15,8 +15,8 @@ public class SkinToModelFunction implements Function<Skin, SkinModel>, Serializa
     public SkinModel apply(Skin entity) {
         return SkinModel.builder()
                 .name(entity.getName())
-                .age(entity.getAge())
-                .Case(entity.getCaseItem().getName())
+                .floatValue(entity.getFloatValue())
+                .acase(entity.getCaseItem().getName())
                 .build();
     }
 

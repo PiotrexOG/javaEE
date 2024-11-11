@@ -19,7 +19,8 @@ public class CaseToModelFunction implements Function<Case, CaseModel> {
                         .stream()
                         .map(skin -> GetSkinsResponse.Skin.builder()
                                 .id(skin.getId())
-                                .message(skin.getName())
+                                .name(skin.getName())
+                                .floatValue(skin.getFloatValue())
                                 .build())
                         .toList())
                 .build();

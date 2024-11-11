@@ -26,9 +26,8 @@ public class GetSkinResponse {
 
     private UUID id;
 
-    private LocalDateTime timestamp;
+    private Float floatValue;
 
-    private String message;
-    private int filesChangedCount;
+    private String name;
     private Case Case;
 }

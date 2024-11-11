@@ -70,4 +70,8 @@ public class CaseService {
         case_repository.create(cas);
     }
 
+    public void update(Case acase) {
+        case_repository.update(acase);
+    }
+
 }

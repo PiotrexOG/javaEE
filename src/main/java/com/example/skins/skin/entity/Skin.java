@@ -27,29 +27,6 @@ public class Skin implements Serializable {
     private Float floatValue;
     private Case caseItem; // Relacja do Case
     private User user; // Relacja do User (1:N)
-    /**
-     * Skin's background story.
-     */
-    private String background;
-
-    /**
-     * Skin's age.
-     */
-    private Integer age;
-
-    /**
-     * Skin's level.
-     */
-    private Integer level;
-
-    /**
-     * Skin's total experience.
-     */
-    private Integer experience;
-
-    /**
-     * Creature's portrait. Images in database are stored as blobs (binary large objects).
-     */
 
 
 }

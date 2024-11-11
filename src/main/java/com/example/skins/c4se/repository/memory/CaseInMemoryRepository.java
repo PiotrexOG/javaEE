@@ -54,7 +54,8 @@ public class CaseInMemoryRepository implements CaseRepository {
 
     @Override
     public void update(Case entity) {
-        throw new UnsupportedOperationException("Operation not implemented.");
+       store.updateCase(entity);
     }
+
 
 }

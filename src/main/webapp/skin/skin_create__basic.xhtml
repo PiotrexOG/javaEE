@@ -19,7 +19,7 @@
                     </div>
                     <div class="col-2 p-2 text-center">
                         <h:commandButton styleClass="btn" value="Next"
-                                         action="#{skinCreate.goToCaseAction()}"/>
+                                         action="#{skinCreate.goToConfirmAction()}"/>
                     </div>
                 </div>
 
@@ -35,26 +35,27 @@
                 <div class="row">
                     <div class="col-4 p-2">
                         <div class="form-outline">
-                            <h:inputText id="age" value="#{skinCreate.skin.age}" styleClass="form-control"/>
-                            <h:outputLabel for="age" value="Age:" styleClass="form-label"/>
+                            <h:inputTextarea id="floatValue" value="#{skinCreate.skin.floatValue}"
+                                             styleClass="form-control" rows="4"/>
+                            <h:outputLabel for="floatValue" value="Float value:" styleClass="form-label"/>
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-4 p-2">
-                        <div class="form-outline">
-                            <h:inputTextarea id="background" value="#{skinCreate.skin.background}"
-                                             styleClass="form-control" rows="4"/>
-                            <h:outputLabel for="background" value="Background:" styleClass="form-label"/>
-                        </div>
+                        <fieldset>
+                            <legend class="form-label fs-6">Repository:</legend>
+                            <h:selectOneMenu id="dropdownId" value="#{skinCreate.skin.acase}" styleClass="form-select">
+                                <f:selectItems value="#{skinCreate.cases}" var="acase" itemValue="#{acase}" itemLabel="#{acase.name}" />
+                            </h:selectOneMenu>
+                        </fieldset>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-2 p-2 text-center">
-                        <h:button styleClass="btn btn-primary" value="Create"
-                                  action="#{skinCreate.goToConfirmAction()}"/>
+                        <h:button styleClass="btn btn-primary" value="Create" disabled="true"/>
                     </div>
                     <div class="col-2 p-2 text-center">
                         <h:commandButton styleClass="btn btn-secondary" value="Cancel"

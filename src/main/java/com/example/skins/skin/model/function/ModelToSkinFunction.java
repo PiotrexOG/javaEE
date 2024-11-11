@@ -19,8 +19,9 @@ public class ModelToSkinFunction implements Function<SkinCreateModel, Skin>, Ser
         return Skin.builder()
                 .id(model.getId())
                 .name(model.getName())
+                .floatValue(model.getFloatValue())
                 .caseItem(Case.builder()
-                        .id(model.getCase().getId())
+                        .id(model.getAcase().getId())
                         .build())
                 .build();
     }
