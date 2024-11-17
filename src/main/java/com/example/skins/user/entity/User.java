@@ -61,7 +61,7 @@ public class User implements Serializable {
     /**
      * User's contact email.
      */
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String email;
 
     @ToString.Exclude
@@ -74,10 +74,10 @@ public class User implements Serializable {
      */
     private SkillGroup skillGroup;
 
-    @Lob
-    @Basic(fetch = FetchType.EAGER)
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private byte[] avatar;
+//    @Lob
+//    @Basic(fetch = FetchType.EAGER)
+//    @ToString.Exclude
+//    @EqualsAndHashCode.Exclude
+//    private byte[] avatar;
 }
 

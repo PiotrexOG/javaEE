@@ -101,45 +101,45 @@ public class UserRestController implements UserController {
         );
     }
 
-    @Override
-    public byte[] getUserAvatar(UUID id) {
-        return service.find(id)
-                .map(User::getAvatar)
-                .orElseThrow(NotFoundException::new);
-    }
-
 //    @Override
-//    public void putUserAvatar(UUID id, InputStream avatar) {
+//    public byte[] getUserAvatar(UUID id) {
+//        return service.find(id)
+//                .map(User::getAvatar)
+//                .orElseThrow(NotFoundException::new);
+//    }
+//
+////    @Override
+////    public void putUserAvatar(UUID id, InputStream avatar) {
+////        service.find(id).ifPresentOrElse(
+////                user -> {
+////                    service.createAvatar(id, avatar);
+////                },
+////                () -> {
+////                    throw new NotFoundException();
+////                }
+////        );
+////    }
+//
+//    @Override
+//    public void patchUserAvatar(UUID id, InputStream avatar) {
 //        service.find(id).ifPresentOrElse(
-//                user -> {
-//                    service.createAvatar(id, avatar);
-//                },
+//                user -> service.updateAvatar(id, avatar),
 //                () -> {
-//                    throw new NotFoundException();
+//                    throw new NotFoundException("User does not exist");
 //                }
 //        );
 //    }
-
-    @Override
-    public void patchUserAvatar(UUID id, InputStream avatar) {
-        service.find(id).ifPresentOrElse(
-                user -> service.updateAvatar(id, avatar),
-                () -> {
-                    throw new NotFoundException("User does not exist");
-                }
-        );
-    }
-
-    @Override
-    public void deleteUserAvatar(UUID id) {
-        service.find(id).ifPresentOrElse(
-                user -> {
-                    user.setAvatar(null);
-                    service.update(user);
-                },
-                () -> {
-                    throw new NotFoundException("User does not exist");
-                }
-        );
-    }
+//
+//    @Override
+//    public void deleteUserAvatar(UUID id) {
+//        service.find(id).ifPresentOrElse(
+//                user -> {
+//                    user.setAvatar(null);
+//                    service.update(user);
+//                },
+//                () -> {
+//                    throw new NotFoundException("User does not exist");
+//                }
+//        );
+//    }
 }

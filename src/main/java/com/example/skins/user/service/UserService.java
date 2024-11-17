@@ -95,44 +95,44 @@ public class UserService {
                 .map(user -> passwordHash.verify(password.toCharArray(), user.getPassword()))
                 .orElse(false);
     }
-    @Transactional
-    public void updateAvatar(UUID id, InputStream is) {
-        repository.find(id).ifPresent(user -> {
-            try {
-                user.setAvatar(is.readAllBytes());
-                repository.update(user);
-//                Path existingPath = Path.of(path, id.toString() + ".jpg");
-//                if (Files.exists(existingPath)) {
-//                    Files.copy(is, existingPath, StandardCopyOption.REPLACE_EXISTING);
-//                } else {
-//                    throw new NotFoundException("User avatar not found, use PUT instead.");
-//                }
-            } catch (IOException ex) {
-                throw new IllegalStateException(ex);
-            }
-        });
-    }
-
-    public void createAvatar(UUID id, InputStream is, String path) {
-        repository.find(id).ifPresent(user -> {
-            try {
-                Path destinationPath = Path.of(path, id.toString() + ".png");
-//                if (Files.exists(destinationPath)) {
-//                    throw new AlreadyExistsException("Avatar already exists, use PATCH instead.");
-//                }
-                Files.copy(is, destinationPath);
-            } catch (IOException ex) {
-                throw new IllegalStateException(ex);
-            }
-        });
-    }
-
-    public void deleteAvatar(UUID id){
-        repository.find(id).ifPresent(user -> {
-            user.setAvatar(null);
-            repository.update(user);
-        });
-    }
+//    @Transactional
+//    public void updateAvatar(UUID id, InputStream is) {
+//        repository.find(id).ifPresent(user -> {
+//            try {
+//                user.setAvatar(is.readAllBytes());
+//                repository.update(user);
+////                Path existingPath = Path.of(path, id.toString() + ".jpg");
+////                if (Files.exists(existingPath)) {
+////                    Files.copy(is, existingPath, StandardCopyOption.REPLACE_EXISTING);
+////                } else {
+////                    throw new NotFoundException("User avatar not found, use PUT instead.");
+////                }
+//            } catch (IOException ex) {
+//                throw new IllegalStateException(ex);
+//            }
+//        });
+//    }
+//
+//    public void createAvatar(UUID id, InputStream is, String path) {
+//        repository.find(id).ifPresent(user -> {
+//            try {
+//                Path destinationPath = Path.of(path, id.toString() + ".png");
+////                if (Files.exists(destinationPath)) {
+////                    throw new AlreadyExistsException("Avatar already exists, use PATCH instead.");
+////                }
+//                Files.copy(is, destinationPath);
+//            } catch (IOException ex) {
+//                throw new IllegalStateException(ex);
+//            }
+//        });
+//    }
+//
+//    public void deleteAvatar(UUID id){
+//        repository.find(id).ifPresent(user -> {
+//            user.setAvatar(null);
+//            repository.update(user);
+//        });
+//    }
 
 
 

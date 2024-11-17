@@ -48,7 +48,8 @@ public class CaseList {
                 skins.forEach(skin -> skinService.delete(skin.getId())));
         System.out.println(skinService.findAll());
         Optional<Case> foundRepo = service.find(repo.getId());
-        foundRepo.ifPresent(service::delete);
+        //foundRepo.ifPresent(service::delete);
+        foundRepo.ifPresent(repository -> service.delete(repository.getId()));
         return "Case_list?faces-redirect=true";
     }
 

@@ -44,10 +44,17 @@ public class CaseService {
 //        // Usuń skrzynkę z repozytorium
 //        case_repository.delete(existingCase);
 //    }
+//    @Transactional
+//    public void delete(Case caseItem) {
+//        // Usuń skrzynkę z repozytorium
+//        case_repository.delete(caseItem);
+//    }
 
-    public void delete(Case caseItem) {
-        // Usuń skrzynkę z repozytorium
-        case_repository.delete(caseItem);
+        @Transactional
+    public void delete(UUID uuid) {
+//        Optional<List<Commit>> commitsToDelete = commitService.findAllByRepo(uuid);
+//        commitsToDelete.ifPresent(commits-> commits.forEach(commit -> commitService.delete(commit.getId())));
+        case_repository.delete(case_repository.find(uuid).orElseThrow());
     }
 
     /**
@@ -73,8 +80,8 @@ public class CaseService {
      * @param cas new case to be saved
      */
     @Transactional
-    public void create(Case cas) {
-        case_repository.create(cas);
+    public void create(Case aCase) {
+        case_repository.create(aCase);
     }
 
     @Transactional

@@ -97,10 +97,10 @@ public class SkinService {
         }
         skinRepository.create(skin);
         /* Both sides of relationship must be handled (if accessed) because of cache. */
-//        professionRepository.find(character.getProfession().getId())
-//                .ifPresent(profession -> profession.getCharacters().add(character));
-//        userRepository.find(character.getUser().getId())
-//                .ifPresent(user -> user.getCharacters().add(character));
+        caseRepository.find(skin.getCaseItem().getId())
+                .ifPresent(aCase -> aCase.getSkins().add(skin));
+//        userRepository.find(skin.getUser().getId())
+//               .ifPresent(user -> user.getSkins().add(skin));
     }
 
 //     public void addSkinToCase(UUID caseId, Skin skin) {

@@ -62,14 +62,13 @@ public class CaseRestController implements CaseController {
         });
     }
 
-    @Override
+       @Override
     public void delete(UUID id) {
-        skinService.findAllByCase(id).ifPresent(skins ->
-                skins.forEach(skin -> skinService.delete(skin.getId())));
-//        skinService.findAll().stream().filter(skin ->
-//                skin.getCasesitory().getId().equals(id)).forEach(skin -> skinService.delete(skin.getId()));
-        service.find(id).ifPresentOrElse(service::delete, () -> {
-            throw new NotFoundException();
-        });
-    }
+           service.find(id).ifPresentOrElse(
+                   entity -> service.delete(id),
+                   () -> {
+                       throw new NotFoundException("Repo not found");
+                   }
+           );
+       }
 }

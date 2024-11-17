@@ -105,14 +105,15 @@ public class SkinRestController implements SkinController {
     @Override
     public void putSkin(UUID caseId, UUID skinId, PutSkinRequest request) {
         request.setCaseId(caseId);
-        try {
-            service.find(skinId).ifPresent(skin -> {
-                throw new BadRequestException("Skin with id: " + skinId + " already exists!");
-            });
-            service.create(factory.requestToSkin().apply(skinId, request));
-        } catch (IllegalArgumentException ex) {
-            throw new BadRequestException(ex);
-        }
+        putSkin(caseId, request);
+//        try {
+//            service.find(skinId).ifPresent(skin -> {
+//                throw new BadRequestException("Skin with id: " + skinId + " already exists!");
+//            });
+//            service.create(factory.requestToSkin().apply(skinId, request));
+//        } catch (IllegalArgumentException ex) {
+//            throw new BadRequestException(ex);
+//        }
     }
 
     @Override

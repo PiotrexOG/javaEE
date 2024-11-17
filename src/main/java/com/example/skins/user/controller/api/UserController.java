@@ -40,22 +40,22 @@ public interface UserController {
     @Path("/users/{id}")
     void deleteUser(@PathParam("id") UUID id);
 
-    @GET
-    @Path("/users/{id}/avatar")
-    @Produces("image/png")
-    byte[] getUserAvatar(@PathParam("id") UUID id);
-
-//    @PUT
-//    @Path("/users/{id}/avatar")a
+//    @GET
+//    @Path("/users/{id}/avatar")
+//    @Produces("image/png")
+//    byte[] getUserAvatar(@PathParam("id") UUID id);
+//
+////    @PUT
+////    @Path("/users/{id}/avatar")a
+////    @Consumes(MediaType.MULTIPART_FORM_DATA)
+////    void putUserAvatar(@PathParam("id") UUID id, @FormParam("avatar") InputStream avatar);
+//
+//    @PATCH
+//    @Path("/users/{id}/avatar")
 //    @Consumes(MediaType.MULTIPART_FORM_DATA)
-//    void putUserAvatar(@PathParam("id") UUID id, @FormParam("avatar") InputStream avatar);
-
-    @PATCH
-    @Path("/users/{id}/avatar")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    void patchUserAvatar(@PathParam("id") UUID id, @FormParam("avatar") InputStream avatar);
-
-    @DELETE
-    @Path("/users/{id}/avatar")
-    void deleteUserAvatar(@PathParam("id") UUID id);
+//    void patchUserAvatar(@PathParam("id") UUID id, @FormParam("avatar") InputStream avatar);
+//
+//    @DELETE
+//    @Path("/users/{id}/avatar")
+//    void deleteUserAvatar(@PathParam("id") UUID id);
 }

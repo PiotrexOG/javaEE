@@ -72,95 +72,90 @@ public class InitializedData{
     @SneakyThrows
     private void init() {
         requestContextController.activate();// start request scope in order to inject request scoped repositories
+                if (userService.find("piotrulo").isEmpty())  {
+            User piotrulo = User.builder()
+                    .id(UUID.fromString("c4804e0f-769e-4ab9-9ebe-0578fb4f00a6"))
+                    .login("piotrulo")
+                    .name("Piotr")
+                    .surname("Wesołowski")
+                    .birthDate(LocalDate.of(2003, 1, 28))
+                    .email("piotrulo@wesoly.example.com")
+                    .password("adminadmin")
+                    .skillGroup(SkillGroup.SILVER)
+                    .build();
+
+            User ewik = User.builder()
+                    .id(UUID.fromString("81e1c2a9-7f57-439b-b53d-6db88b071e4e"))
+                    .login("ewik")
+                    .name("Jakub")
+                    .surname("Wojtalewicz")
+                    .birthDate(LocalDate.of(2002, 2, 6))
+                    .email("ewik@example.com")
+                    .password("useruser")
+                    .skillGroup(SkillGroup.GLOBAL)
+                    .build();
+
+            User oskar = User.builder()
+                    .id(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4197"))
+                    .login("oskar")
+                    .name("Oskar")
+                    .surname("Wilda")
+                    .birthDate(LocalDate.of(2002, 5, 8))
+                    .email("oski@example.com")
+                    .password("useruser")
+                    .skillGroup(SkillGroup.GOLD)
+                    .build();
+
+            userService.create(piotrulo);
+            userService.create(ewik);
+            userService.create(oskar);
+
+            // Tworzenie Case'ów (kategorii skinów)
+            Case defaultCase = Case.builder()
+                    .id(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123"))
+                    .name("Default Case")
+                    .releaseDate(LocalDate.now())
+                    .seriesId(1)
+                    .build();
+
+            Case premiumCase = Case.builder()
+                    .id(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4124"))
+                    .name("Premium Case")
+                    .releaseDate(LocalDate.now())
+                    .seriesId(2)
+                    .build();
 
 
-        User piotrulo = User.builder()
-                .id(UUID.fromString("c4804e0f-769e-4ab9-9ebe-0578fb4f00a6"))
-                .login("piotrulo")
-                .name("Piotr")
-                .surname("Wesołowski")
-                .birthDate(LocalDate.of(2003, 1, 28))
-                .email("piotrulo@wesoly.example.com")
-                .password("adminadmin")
-                .skillGroup(SkillGroup.SILVER)
-                .avatar(getResourceAsByteArray("/test/avatar/calvian.png"))
-                .build();
+            // Tworzenie Skinów i przypisanie ich do Case'ów oraz użytkownika
+            Skin redSkin = Skin.builder()
+                    .id(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4999"))
+                    .name("Red Dragon")
+                    .floatValue(0.05f)
+                    .caseItem(defaultCase)  // przypisanie do defaultCase
+                    .user(piotrulo)         // przypisanie do użytkownika
+                    .build();
 
-        User ewik = User.builder()
-                .id(UUID.fromString("81e1c2a9-7f57-439b-b53d-6db88b071e4e"))
-                .login("ewik")
-                .name("Jakub")
-                .surname("Wojtalewicz")
-                .birthDate(LocalDate.of(2002, 2, 6))
-                .email("ewik@example.com")
-                .password("useruser")
-                .skillGroup(SkillGroup.GLOBAL)
-                                .avatar(getResourceAsByteArray("/test/avatar/calvian.png"))
-                .build();
+            Skin blueSkin = Skin.builder()
+                    .id(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4998"))
+                    .name("Blue Phoenix")
+                    .floatValue(0.10f)
+                    .caseItem(premiumCase)  // przypisanie do premiumCase
+                    .user(piotrulo)         // przypisanie do użytkownika
+                    .build();
 
-        User oskar = User.builder()
-                .id(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4197"))
-                .login("oskar")
-                .name("Oskar")
-                .surname("Wilda")
-                .birthDate(LocalDate.of(2002, 5, 8))
-                .email("oski@example.com")
-                .password("useruser")
-                .skillGroup(SkillGroup.GOLD)
-                                .avatar(getResourceAsByteArray("/test/avatar/calvian.png"))
-                .build();
+            //defaultCase.setSkins(Arrays.asList(redSkin, blueSkin));
 
-        userService.create(piotrulo);
-        userService.create(ewik);
-        userService.create(oskar);
+            caseService.create(defaultCase);
+            caseService.create(premiumCase);
 
-        // Tworzenie Case'ów (kategorii skinów)
-        Case defaultCase = Case.builder()
-                .id(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123"))
-                .name("Default Case")
-                .releaseDate(LocalDate.now())
-                .seriesId(1)
-                .build();
+            skinService.create(redSkin);
+            skinService.create(blueSkin);
 
-        Case premiumCase = Case.builder()
-                .id(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4124"))
-                .name("Premium Case")
-                .releaseDate(LocalDate.now())
-                .seriesId(2)
-                .build();
+            System.out.println("halo");
+            System.out.println(skinService.findAllByCase(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123")));
+            System.out.println("halo");
 
-
-
-        // Tworzenie Skinów i przypisanie ich do Case'ów oraz użytkownika
-        Skin redSkin = Skin.builder()
-                .id(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4999"))
-                .name("Red Dragon")
-                .floatValue(0.05f)
-                .caseItem(defaultCase)  // przypisanie do defaultCase
-                .user(piotrulo)         // przypisanie do użytkownika
-                .build();
-
-        Skin blueSkin = Skin.builder()
-                .id(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4998"))
-                .name("Blue Phoenix")
-                .floatValue(0.10f)
-                .caseItem(premiumCase)  // przypisanie do premiumCase
-                .user(piotrulo)         // przypisanie do użytkownika
-                .build();
-
-        //defaultCase.setSkins(Arrays.asList(redSkin, blueSkin));
-
-        caseService.create(defaultCase);
-        caseService.create(premiumCase);
-
-        skinService.create(redSkin);
-        skinService.create(blueSkin);
-
-        System.out.println("halo");
-        System.out.println(skinService.findAllByCase(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123")));
-        System.out.println("halo");
-
-        System.out.println(caseService.find(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123")).get().getSkins());
+            System.out.println(caseService.find(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123")).get().getSkins());
 
 //        List<Skin> all_skins = skinService.findAll();
 //        for (Skin skin : all_skins) {
@@ -221,7 +216,7 @@ public class InitializedData{
 //        for (Skin skin : all_skins2) {
 //            System.out.println(skin);
 //        }
-
+        }
         requestContextController.deactivate();
 
     }
