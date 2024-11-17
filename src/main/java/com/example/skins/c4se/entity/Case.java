@@ -1,6 +1,7 @@
 package com.example.skins.c4se.entity;
 
 import com.example.skins.skin.entity.Skin;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
@@ -17,11 +18,14 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Entity
+@Table(name = "cases")
 public class Case implements Serializable {
 
     /**
      * Unique id (primary key).
      */
+    @Id
     private UUID id;
 
     /**
@@ -38,6 +42,7 @@ public class Case implements Serializable {
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @OneToMany(mappedBy = "caseItem", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Skin> skins;
 
 

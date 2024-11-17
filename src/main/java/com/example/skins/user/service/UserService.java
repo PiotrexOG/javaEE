@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import com.example.skins.crypto.component.Pbkdf2PasswordHash;
 import com.example.skins.user.entity.User;
 import com.example.skins.user.repository.api.UserRepository;
-
+import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -71,17 +71,18 @@ public class UserService {
      *
      * @param user new user to be saved
      */
+    @Transactional
     public void create(User user) {
         user.setPassword(passwordHash.generate(user.getPassword().toCharArray()));
         repository.create(user);
     }
-
+    @Transactional
     public void update(User user) {
         repository.update(user);
     }
-
-    public void delete(User user) {
-        repository.delete(user);
+    @Transactional
+    public void delete(UUID id) {
+        repository.delete(repository.find(id).orElseThrow());
     }
 
     /**
@@ -94,15 +95,16 @@ public class UserService {
                 .map(user -> passwordHash.verify(password.toCharArray(), user.getPassword()))
                 .orElse(false);
     }
-
-    public void updateAvatar(UUID id, InputStream is, String path) {
+    @Transactional
+    public void updateAvatar(UUID id, InputStream is) {
         repository.find(id).ifPresent(user -> {
             try {
-                Path existingPath = Path.of(path, id.toString() + ".png");
-                if (Files.exists(existingPath)) {
-                    Files.copy(is, existingPath, StandardCopyOption.REPLACE_EXISTING);
-                }
-//                else {
+                user.setAvatar(is.readAllBytes());
+                repository.update(user);
+//                Path existingPath = Path.of(path, id.toString() + ".jpg");
+//                if (Files.exists(existingPath)) {
+//                    Files.copy(is, existingPath, StandardCopyOption.REPLACE_EXISTING);
+//                } else {
 //                    throw new NotFoundException("User avatar not found, use PUT instead.");
 //                }
             } catch (IOException ex) {

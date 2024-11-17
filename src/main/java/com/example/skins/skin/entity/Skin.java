@@ -1,6 +1,9 @@
 package com.example.skins.skin.entity;
 
+
 import com.example.skins.c4se.entity.Case;
+import jakarta.persistence.*;
+import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import com.example.skins.user.entity.User;
@@ -19,13 +22,20 @@ import java.util.UUID;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = false)
+@Entity
+@Table(name = "skins")
 
 public class Skin implements Serializable {
+    @Id
     private UUID id;
 
     private String name;
     private Float floatValue;
+    @ManyToOne(fetch = FetchType.LAZY)
+  //  @JoinColumn(name = "case")
     private Case caseItem; // Relacja do Case
+    @ManyToOne(fetch = FetchType.LAZY)
+  //  @JoinColumn(name = "user_name")
     private User user; // Relacja do User (1:N)
 
 

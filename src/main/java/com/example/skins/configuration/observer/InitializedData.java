@@ -83,7 +83,7 @@ public class InitializedData{
                 .email("piotrulo@wesoly.example.com")
                 .password("adminadmin")
                 .skillGroup(SkillGroup.SILVER)
-    //            .avatar(getResourceAsByteArray("/test/avatar/calvian.png"))
+                .avatar(getResourceAsByteArray("/test/avatar/calvian.png"))
                 .build();
 
         User ewik = User.builder()
@@ -95,6 +95,7 @@ public class InitializedData{
                 .email("ewik@example.com")
                 .password("useruser")
                 .skillGroup(SkillGroup.GLOBAL)
+                                .avatar(getResourceAsByteArray("/test/avatar/calvian.png"))
                 .build();
 
         User oskar = User.builder()
@@ -106,6 +107,7 @@ public class InitializedData{
                 .email("oski@example.com")
                 .password("useruser")
                 .skillGroup(SkillGroup.GOLD)
+                                .avatar(getResourceAsByteArray("/test/avatar/calvian.png"))
                 .build();
 
         userService.create(piotrulo);

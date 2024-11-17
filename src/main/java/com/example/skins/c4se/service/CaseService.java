@@ -3,6 +3,9 @@ package com.example.skins.c4se.service;
 import com.example.skins.c4se.entity.Case;
 import com.example.skins.c4se.repository.api.CaseRepository;
 import com.example.skins.skin.repository.api.SkinRepository;
+import jakarta.transaction.Transactional;
+import lombok.NoArgsConstructor;
+import lombok.extern.java.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.NoArgsConstructor;
@@ -17,6 +20,7 @@ import java.util.UUID;
  */
 @ApplicationScoped
 @NoArgsConstructor(force = true)
+@Log
 public class CaseService {
 
     /**
@@ -51,9 +55,11 @@ public class CaseService {
      * @return container with case entity
      */
     public Optional<Case> find(UUID id) {
-        return case_repository.find(id);
+        Optional<Case> aCase = case_repository.find(id);
+        /* Until lazy loaded list of characters is not accessed it is not in cache, so it does not need bo te cared of. */
+//        profession.ifPresent(value -> log.info("Number of professions: %d".formatted(value.getCharacters().size())));
+        return aCase;
     }
-
     /**
      * @return all available cases
      */
@@ -66,10 +72,12 @@ public class CaseService {
      *
      * @param cas new case to be saved
      */
+    @Transactional
     public void create(Case cas) {
         case_repository.create(cas);
     }
 
+    @Transactional
     public void update(Case acase) {
         case_repository.update(acase);
     }

@@ -3,6 +3,7 @@ package com.example.skins.skin.service;
 import com.example.skins.c4se.repository.api.CaseRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import lombok.NoArgsConstructor;
 import com.example.skins.skin.repository.api.SkinRepository;
 import com.example.skins.skin.entity.Skin;
@@ -86,18 +87,31 @@ public class SkinService {
      *
      * @param skin new skin
      */
+    @Transactional
     public void create(Skin skin) {
+        if (skinRepository.find(skin.getId()).isPresent()) {
+            throw new IllegalArgumentException("Skin already exists.");
+        }
+        if (caseRepository.find(skin.getCaseItem().getId()).isEmpty()) {
+            throw new IllegalArgumentException("Case does not exists.");
+        }
         skinRepository.create(skin);
+        /* Both sides of relationship must be handled (if accessed) because of cache. */
+//        professionRepository.find(character.getProfession().getId())
+//                .ifPresent(profession -> profession.getCharacters().add(character));
+//        userRepository.find(character.getUser().getId())
+//                .ifPresent(user -> user.getCharacters().add(character));
     }
 
-     public void addSkinToCase(UUID caseId, Skin skin) {
-        skinRepository.addSkinToCase(caseId, skin);
-    }
+//     public void addSkinToCase(UUID caseId, Skin skin) {
+//        skinRepository.addSkinToCase(caseId, skin);
+//    }
     /**
      * Updates existing skin.
      *
      * @param skin skin to be updated
      */
+    @Transactional
     public void update(Skin skin) {
         skinRepository.update(skin);
     }
@@ -107,6 +121,7 @@ public class SkinService {
      *
      * @param id existing skin's id to be deleted
      */
+    @Transactional
     public void delete(UUID id) {
         skinRepository.delete(skinRepository.find(id).orElseThrow());
     }

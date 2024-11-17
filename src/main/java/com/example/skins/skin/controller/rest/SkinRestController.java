@@ -1,5 +1,7 @@
 package com.example.skins.skin.controller.rest;
 
+import jakarta.transaction.TransactionalException;
+import lombok.extern.java.Log;
 import com.example.skins.skin.controller.api.SkinController;
 import com.example.skins.skin.dto.GetSkinResponse;
 import com.example.skins.skin.dto.GetSkinsResponse;
@@ -15,8 +17,10 @@ import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.Path;
 
 import java.util.UUID;
+import java.util.logging.Level;
 
 @Path("")
+@Log
 public class SkinRestController implements SkinController {
     private final SkinService service;
     private final DtoFunctionFactory factory;
@@ -69,8 +73,12 @@ public class SkinRestController implements SkinController {
                 throw new BadRequestException("Skin with id: " + id + " already exists!");
             });
             service.create(factory.requestToSkin().apply(id, request));
-        } catch (IllegalArgumentException ex) {
-            throw new BadRequestException(ex);
+        } catch (TransactionalException ex) {
+            if (ex.getCause() instanceof IllegalArgumentException) {
+                log.log(Level.WARNING, ex.getMessage(), ex);
+                throw new BadRequestException(ex);
+            }
+            throw ex;
         }
     }
 

@@ -41,7 +41,7 @@ public class DtoFunctionFactory {
      *
      * @return UpdateUserFunction instance
      */
-    public UpdateUserWithRequestFunction updateUser() {
+    public UpdateUserWithRequestFunction updateUserWithRequest() {
         return new UpdateUserWithRequestFunction();
     }
 

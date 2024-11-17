@@ -1,5 +1,6 @@
 package com.example.skins.user.entity;
 
+import jakarta.persistence.*;
 import com.example.skins.skin.entity.Skin;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -13,18 +14,21 @@ import java.util.UUID;
  * Entity for system user. Represents information about particular user as well as credentials for authorization and
  * authentication needs.
  */
-@Getter
-@Setter
-@SuperBuilder
+
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString
 @EqualsAndHashCode
+@Entity
+@Table(name = "users")
 public class User implements Serializable {
 
     /**
      * Unique id (primary key).
      */
+    @Id
     private UUID id;
 
     /**
@@ -45,6 +49,7 @@ public class User implements Serializable {
     /**
      * User's birthdate.
      */
+    @Column(name = "birth_date")
     private LocalDate birthDate;
 
     /**
@@ -56,8 +61,12 @@ public class User implements Serializable {
     /**
      * User's contact email.
      */
+    @Column(nullable = false, unique = true)
     private String email;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Skin> skins;
 
     /**
@@ -65,6 +74,8 @@ public class User implements Serializable {
      */
     private SkillGroup skillGroup;
 
+    @Lob
+    @Basic(fetch = FetchType.EAGER)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private byte[] avatar;
