@@ -2,7 +2,7 @@ package com.example.skins.user.repository.persitence;
 
 import com.example.skins.user.entity.User;
 import com.example.skins.user.repository.api.UserRepository;
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.Dependent;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@RequestScoped
+@Dependent
 public class UserPersistenceRepository implements UserRepository {
 
     private EntityManager em;

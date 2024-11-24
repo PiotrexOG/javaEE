@@ -1,5 +1,6 @@
 package com.example.skins.skin.view;
 
+import jakarta.ejb.EJB;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -17,7 +18,7 @@ public class SkinList {
     /**
      * Service for managing Skins.
      */
-    private final SkinService service;
+    private SkinService service;
 
     /**
      * Skins list exposed to the view.
@@ -34,9 +35,13 @@ public class SkinList {
      * @param factory factory producing functions for conversion between models and entities
      */
     @Inject
-    public SkinList(SkinService service, ModelFunctionFactory factory) {
-        this.service = service;
+    public SkinList(ModelFunctionFactory factory) {
         this.factory = factory;
+    }
+
+    @EJB
+    public void setService(SkinService service) {
+        this.service = service;
     }
 
     /**

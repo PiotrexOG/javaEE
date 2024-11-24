@@ -1,5 +1,7 @@
 package com.example.skins.skin.controller.rest;
 
+import jakarta.ejb.EJB;
+import jakarta.ejb.EJBException;
 import jakarta.transaction.TransactionalException;
 import lombok.extern.java.Log;
 import com.example.skins.skin.controller.api.SkinController;
@@ -22,16 +24,31 @@ import java.util.logging.Level;
 @Path("")
 @Log
 public class SkinRestController implements SkinController {
-    private final SkinService service;
+    private SkinService service;
     private final DtoFunctionFactory factory;
-    private final CaseService caseService;
+    private CaseService caseService;
 
     @Inject
     public SkinRestController(SkinService service, CaseService caseService, DtoFunctionFactory factory) {
-        this.service = service;
-        this.caseService = caseService;
         this.factory = factory;
     }
+
+    /**
+     * @param service profession service
+     */
+    @EJB
+    public void setSkinService(SkinService service) {
+        this.service = service;
+    }
+
+    /**
+     * @param service profession service
+     */
+    @EJB
+    public void setCaseService(CaseService service) {
+        this.caseService = service;
+    }
+
 
     @Override
     public GetSkinsResponse getSkins() {
@@ -73,7 +90,7 @@ public class SkinRestController implements SkinController {
                 throw new BadRequestException("Skin with id: " + id + " already exists!");
             });
             service.create(factory.requestToSkin().apply(id, request));
-        } catch (TransactionalException ex) {
+        } catch (EJBException ex) {
             if (ex.getCause() instanceof IllegalArgumentException) {
                 log.log(Level.WARNING, ex.getMessage(), ex);
                 throw new BadRequestException(ex);

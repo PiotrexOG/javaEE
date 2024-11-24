@@ -1,5 +1,6 @@
 package com.example.skins.skin.repository.persistence;
 
+import jakarta.enterprise.context.Dependent;
 import com.example.skins.skin.repository.api.SkinRepository;
 import com.example.skins.skin.entity.Skin;
 import com.example.skins.skin.repository.api.SkinRepository;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@RequestScoped
+@Dependent
 public class SkinPersistenceRepository implements SkinRepository {
 
     private EntityManager em;

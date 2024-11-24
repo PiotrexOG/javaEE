@@ -1,5 +1,6 @@
 package com.example.skins.skin.view;
 
+import jakarta.ejb.EJB;
 import com.example.skins.c4se.model.CaseModel;
 import jakarta.enterprise.context.Conversation;
 import jakarta.enterprise.context.ConversationScoped;
@@ -31,12 +32,12 @@ public class SkinCreate implements Serializable {
     /**
      * Service for managing Skins.
      */
-    private final SkinService SkinService;
+    private SkinService skinService;
 
     /**
      * Service for managing Cases.
      */
-    private final CaseService CaseService;
+    private CaseService caseService;
 
     /**
      * Factory producing functions for conversion between models and entities.
@@ -61,22 +62,32 @@ public class SkinCreate implements Serializable {
     private final Conversation conversation;
 
     /**
-     * @param SkinService  service for managing Skins
-     * @param CaseService service for managing Cases
      * @param factory           factory producing functions for conversion between models and entities
      * @param conversation      injected conversation
      */
     @Inject
     public SkinCreate(
-            SkinService SkinService,
-            CaseService CaseService,
             ModelFunctionFactory factory,
             Conversation conversation
     ) {
-        this.SkinService = SkinService;
         this.factory = factory;
-        this.CaseService = CaseService;
         this.conversation = conversation;
+    }
+
+        /**
+     * @param skinService service for managing characters
+     */
+    @EJB
+    public void setSkinService(SkinService skinService) {
+        this.skinService = skinService;
+    }
+
+    /**
+     * @param caseService service for managing professions
+     */
+    @EJB
+    public void setCaseService(CaseService caseService) {
+        this.caseService = caseService;
     }
 
     /**
@@ -86,7 +97,7 @@ public class SkinCreate implements Serializable {
      */
     public void init() {
         if (conversation.isTransient()) {
-            Cases = CaseService.findAll().stream()
+            Cases = caseService.findAll().stream()
                     .map(factory.CaseToModel())
                     .collect(Collectors.toList());
             Skin = SkinCreateModel.builder()
@@ -152,7 +163,7 @@ public class SkinCreate implements Serializable {
      * @return Skins list navigation case
      */
     public String saveAction() {
-        SkinService.create(factory.modelToSkin().apply(Skin));
+        skinService.create(factory.modelToSkin().apply(Skin));
         conversation.end();
         return "/skin/skin_list.xhtml?faces-redirect=true";
     }

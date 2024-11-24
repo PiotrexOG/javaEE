@@ -1,5 +1,6 @@
 package com.example.skins.c4se.repository.persistence;
 
+import jakarta.enterprise.context.Dependent;
 import com.example.skins.c4se.entity.Case;
 import com.example.skins.c4se.repository.api.CaseRepository;
 import jakarta.enterprise.context.RequestScoped;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@RequestScoped
+@Dependent
 public class CasePersistenceRepository implements CaseRepository {
     private EntityManager em;
 

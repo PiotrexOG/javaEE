@@ -1,5 +1,6 @@
 package com.example.skins.c4se.contoller.rest;
 
+import jakarta.ejb.EJB;
 import com.example.skins.skin.service.SkinService;
 import com.example.skins.component.DtoFunctionFactory;
 import com.example.skins.c4se.contoller.api.CaseController;
@@ -20,15 +21,29 @@ import java.util.UUID;
 
 @Path("")
 public class CaseRestController implements CaseController {
-    private final CaseService service;
+    private CaseService service;
     private final DtoFunctionFactory factory;
-    private final SkinService skinService;
+    private SkinService skinService;
 
     @Inject
-    public CaseRestController(CaseService service, DtoFunctionFactory factory, SkinService skinService) {
-        this.service = service;
+    public CaseRestController(DtoFunctionFactory factory) {
         this.factory = factory;
-        this.skinService = skinService;
+    }
+
+    /**
+     * @param service profession service
+     */
+    @EJB
+    public void setCaseService(CaseService service) {
+        this.service = service;
+    }
+
+    /**
+     * @param service profession service
+     */
+    @EJB
+    public void setSkinService(SkinService service) {
+        this.skinService = service;
     }
 
     @Override

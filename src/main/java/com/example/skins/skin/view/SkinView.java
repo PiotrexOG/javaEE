@@ -1,5 +1,6 @@
 package com.example.skins.skin.view;
 
+import jakarta.ejb.EJB;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
@@ -26,7 +27,7 @@ public class SkinView implements Serializable {
     /**
      * Service for managing Skins.
      */
-    private final SkinService service;
+    private SkinService service;
 
     /**
      * Factory producing functions for conversion between models and entities.
@@ -52,9 +53,13 @@ public class SkinView implements Serializable {
      * @param factory factory producing functions for conversion between models and entities
      */
     @Inject
-    public SkinView(SkinService service, ModelFunctionFactory factory) {
-        this.service = service;
+    public SkinView(ModelFunctionFactory factory) {
         this.factory = factory;
+    }
+
+    @EJB
+    public void setService(SkinService service) {
+        this.service = service;
     }
 
     /**

@@ -1,5 +1,7 @@
 package com.example.skins.c4se.service;
 
+import jakarta.ejb.LocalBean;
+import jakarta.ejb.Stateless;
 import com.example.skins.c4se.entity.Case;
 import com.example.skins.c4se.repository.api.CaseRepository;
 import com.example.skins.skin.repository.api.SkinRepository;
@@ -18,7 +20,8 @@ import java.util.UUID;
 /**
  * Service layer for all business actions regarding character's case entity.
  */
-@ApplicationScoped
+@LocalBean
+@Stateless
 @NoArgsConstructor(force = true)
 @Log
 public class CaseService {
@@ -50,7 +53,6 @@ public class CaseService {
 //        case_repository.delete(caseItem);
 //    }
 
-        @Transactional
     public void delete(UUID uuid) {
 //        Optional<List<Commit>> commitsToDelete = commitService.findAllByRepo(uuid);
 //        commitsToDelete.ifPresent(commits-> commits.forEach(commit -> commitService.delete(commit.getId())));
@@ -79,12 +81,12 @@ public class CaseService {
      *
      * @param cas new case to be saved
      */
-    @Transactional
+
     public void create(Case aCase) {
         case_repository.create(aCase);
     }
 
-    @Transactional
+
     public void update(Case acase) {
         case_repository.update(acase);
     }

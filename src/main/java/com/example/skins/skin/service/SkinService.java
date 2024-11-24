@@ -1,5 +1,7 @@
 package com.example.skins.skin.service;
 
+import jakarta.ejb.LocalBean;
+import jakarta.ejb.Stateless;
 import com.example.skins.c4se.repository.api.CaseRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -17,7 +19,8 @@ import java.util.UUID;
 /**
  * Service layer for all business actions regarding skin entity.
  */
-@ApplicationScoped
+@LocalBean
+@Stateless
 @NoArgsConstructor(force = true)
 public class SkinService {
 
@@ -87,7 +90,6 @@ public class SkinService {
      *
      * @param skin new skin
      */
-    @Transactional
     public void create(Skin skin) {
         if (skinRepository.find(skin.getId()).isPresent()) {
             throw new IllegalArgumentException("Skin already exists.");
@@ -111,7 +113,6 @@ public class SkinService {
      *
      * @param skin skin to be updated
      */
-    @Transactional
     public void update(Skin skin) {
         skinRepository.update(skin);
     }
@@ -121,7 +122,6 @@ public class SkinService {
      *
      * @param id existing skin's id to be deleted
      */
-    @Transactional
     public void delete(UUID id) {
         skinRepository.delete(skinRepository.find(id).orElseThrow());
     }

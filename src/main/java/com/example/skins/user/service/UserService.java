@@ -4,6 +4,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.NoArgsConstructor;
 
+import jakarta.ejb.LocalBean;
+import jakarta.ejb.Stateless;
 import com.example.skins.crypto.component.Pbkdf2PasswordHash;
 import com.example.skins.user.entity.User;
 import com.example.skins.user.repository.api.UserRepository;
@@ -21,7 +23,9 @@ import java.util.UUID;
 /**
  * Service layer for all business actions regarding user entity.
  */
-@ApplicationScoped
+
+@LocalBean
+@Stateless
 @NoArgsConstructor(force = true)
 public class UserService {
 
@@ -71,16 +75,15 @@ public class UserService {
      *
      * @param user new user to be saved
      */
-    @Transactional
     public void create(User user) {
         user.setPassword(passwordHash.generate(user.getPassword().toCharArray()));
         repository.create(user);
     }
-    @Transactional
+
     public void update(User user) {
         repository.update(user);
     }
-    @Transactional
+
     public void delete(UUID id) {
         repository.delete(repository.find(id).orElseThrow());
     }

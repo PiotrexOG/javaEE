@@ -1,5 +1,15 @@
 package com.example.skins.configuration.observer;
 
+
+//package pl.edu.pg.eti.kask.rpg.configuration.singleton;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.ejb.EJB;
+import jakarta.ejb.Singleton;
+import jakarta.ejb.Startup;
+import jakarta.ejb.TransactionAttribute;
+import jakarta.ejb.TransactionAttributeType;
+import lombok.NoArgsConstructor;
 import com.example.skins.c4se.entity.Case;
 import com.example.skins.skin.entity.Skin;
 import com.example.skins.c4se.service.CaseService;
@@ -27,41 +37,35 @@ import java.util.UUID;
  * database with default content. When using persistence storage application instance should be initialized only during
  * first run in order to init database with starting data. Good place to create first default admin user.
  */
-@ApplicationScoped
+@Singleton
+@Startup
+@TransactionAttribute(value = TransactionAttributeType.NOT_SUPPORTED)
+@NoArgsConstructor
 public class InitializedData{
 
     /**
      * User service.
      */
-    private final UserService userService;
-    private final SkinService skinService;
-    private final CaseService caseService;
+    private  UserService userService;
 
-    /**
-     * The CDI container provides a built-in instance of {@link RequestContextController} that is dependent scoped for
-     * the purposes of activating and deactivating.
-     */
-    private final RequestContextController requestContextController;
 
-    /**
-     * @param userService              user service
-     * @param requestContextController CDI request context controller
-     */
-    @Inject
-    public InitializedData(
-            UserService userService,
-            SkinService skinService,
-            CaseService caseService,
-            RequestContextController requestContextController
-    ) {
+
+    private  SkinService skinService;
+    private  CaseService caseService;
+
+    @EJB
+    public void setUserService(UserService userService) {
         this.userService = userService;
-        this.skinService = skinService;
-        this.caseService = caseService;
-        this.requestContextController = requestContextController;
     }
 
-    public void contextInitialized(@Observes @Initialized(ApplicationScoped.class) Object init) {
-        init();
+    @EJB
+    public void setSkinService(SkinService skinService) {
+        this.skinService = skinService;
+    }
+
+    @EJB
+    public void setCaseService(CaseService caseService) {
+        this.caseService = caseService;
     }
 
 
@@ -69,9 +73,10 @@ public class InitializedData{
      * Initializes database with some example values. Should be called after creating this object. This object should be
      * created only once.
      */
+    @PostConstruct
     @SneakyThrows
     private void init() {
-        requestContextController.activate();// start request scope in order to inject request scoped repositories
+
                 if (userService.find("piotrulo").isEmpty())  {
             User piotrulo = User.builder()
                     .id(UUID.fromString("c4804e0f-769e-4ab9-9ebe-0578fb4f00a6"))
@@ -217,7 +222,6 @@ public class InitializedData{
 //            System.out.println(skin);
 //        }
         }
-        requestContextController.deactivate();
 
     }
 
