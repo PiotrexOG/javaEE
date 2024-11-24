@@ -10,16 +10,20 @@ import com.example.skins.c4se.dto.PatchCaseRequest;
 import com.example.skins.c4se.dto.PutCaseRequest;
 import com.example.skins.c4se.entity.Case;
 import com.example.skins.c4se.service.CaseService;
-
+import com.example.skins.user.entity.UserRoles;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.Path;
+import lombok.extern.java.Log;
 
 import java.util.Optional;
 import java.util.UUID;
 
 @Path("")
+@Log
+@RolesAllowed(UserRoles.USER)
 public class CaseRestController implements CaseController {
     private CaseService service;
     private final DtoFunctionFactory factory;

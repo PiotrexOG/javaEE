@@ -20,6 +20,11 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 import lombok.SneakyThrows;
 import lombok.extern.java.Log;
+import jakarta.ejb.EJB;
+import com.example.skins.user.entity.UserRoles;
+import com.example.skins.user.service.UserService;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,12 +37,18 @@ import java.util.logging.Level;
 
 @Path("")
 @Log
+@RolesAllowed(UserRoles.USER)
 public class UserRestController implements UserController {
-    private final UserService service;
+    private UserService service;
     private final DtoFunctionFactory factory;
 
     private final UriInfo uriInfo;
     private HttpServletResponse response;
+
+    @EJB
+    public void setService(UserService service){
+        this.service = service;
+    }
 
     @Context
     public void setResponse(HttpServletResponse response) {
@@ -45,8 +56,7 @@ public class UserRestController implements UserController {
     }
 
     @Inject
-    public UserRestController(UserService userService, DtoFunctionFactory dtoFunctionFactory, UriInfo uriInfo) {
-        service = userService;
+    public UserRestController(DtoFunctionFactory dtoFunctionFactory, UriInfo uriInfo) {
         factory = dtoFunctionFactory;
         this.uriInfo = uriInfo;
     }
@@ -67,6 +77,7 @@ public class UserRestController implements UserController {
 
     @Override
     @SneakyThrows
+        @PermitAll
     public void putUser(UUID id, PutUserRequest request) {
         try {
             service.create(factory.requestToUser().apply(id, request));

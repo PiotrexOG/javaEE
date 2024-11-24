@@ -7,6 +7,7 @@ import com.example.skins.c4se.service.CaseService;
 import com.example.skins.component.ModelFunctionFactory;
 import com.example.skins.skin.dto.GetSkinsResponse;
 import com.example.skins.skin.service.SkinService;
+import jakarta.ejb.EJB;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
@@ -25,8 +26,8 @@ import java.util.UUID;
 @ViewScoped
 @Named
 public class CaseView implements Serializable {
-    private final CaseService service;
-    private final SkinService skinService;
+    private CaseService service;
+    private SkinService skinService;
     private final ModelFunctionFactory factory;
 
     @Getter
@@ -36,10 +37,18 @@ public class CaseView implements Serializable {
     @Getter
     private CaseModel case_item;
 
-    @Inject
-    public CaseView(CaseService service, SkinService skinService, ModelFunctionFactory modelFunctionFactory) {
+    @EJB
+    public void setCaseService(CaseService service){
         this.service = service;
-        this.skinService =skinService;
+    }
+
+    @EJB
+    public void setSkinService(SkinService skinService){
+        this.skinService = skinService;
+    }
+
+    @Inject
+    public CaseView(ModelFunctionFactory modelFunctionFactory) {
         factory = modelFunctionFactory;
     }
 

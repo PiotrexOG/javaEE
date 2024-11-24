@@ -58,6 +58,11 @@ public class User implements Serializable {
     @ToString.Exclude
     private String password;
 
+    @CollectionTable(name = "users__roles", joinColumns = @JoinColumn(name = "id"))
+    @Column(name = "role")
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles;
+
     /**
      * User's contact email.
      */

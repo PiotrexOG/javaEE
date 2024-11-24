@@ -21,9 +21,19 @@ import jakarta.enterprise.context.control.RequestContextController;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import lombok.SneakyThrows;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.security.DeclareRoles;
+import jakarta.annotation.security.RunAs;
+import jakarta.ejb.*;
+import com.example.skins.user.entity.UserRoles;
 
 import com.example.skins.user.entity.User;
 import com.example.skins.user.service.UserService;
+import jakarta.security.enterprise.SecurityContext;
+import jakarta.servlet.ServletContextListener;
+import lombok.NoArgsConstructor;
+import lombok.SneakyThrows;
+import lombok.extern.java.Log;
 
 import java.io.InputStream;
 import java.time.LocalDate;
@@ -41,6 +51,10 @@ import java.util.UUID;
 @Startup
 @TransactionAttribute(value = TransactionAttributeType.NOT_SUPPORTED)
 @NoArgsConstructor
+@DependsOn("InitializeAdminService")
+@DeclareRoles({UserRoles.ADMIN, UserRoles.USER})
+@RunAs(UserRoles.ADMIN)
+@Log
 public class InitializedData{
 
     /**
@@ -52,6 +66,9 @@ public class InitializedData{
 
     private  SkinService skinService;
     private  CaseService caseService;
+
+        @Inject
+    private SecurityContext securityContext;
 
     @EJB
     public void setUserService(UserService userService) {
@@ -86,6 +103,7 @@ public class InitializedData{
                     .birthDate(LocalDate.of(2003, 1, 28))
                     .email("piotrulo@wesoly.example.com")
                     .password("adminadmin")
+                    .roles(List.of(UserRoles.ADMIN, UserRoles.USER))
                     .skillGroup(SkillGroup.SILVER)
                     .build();
 
@@ -98,6 +116,7 @@ public class InitializedData{
                     .email("ewik@example.com")
                     .password("useruser")
                     .skillGroup(SkillGroup.GLOBAL)
+                     .roles(List.of(UserRoles.USER))
                     .build();
 
             User oskar = User.builder()
@@ -109,6 +128,7 @@ public class InitializedData{
                     .email("oski@example.com")
                     .password("useruser")
                     .skillGroup(SkillGroup.GOLD)
+                    .roles(List.of(UserRoles.USER))
                     .build();
 
             userService.create(piotrulo);

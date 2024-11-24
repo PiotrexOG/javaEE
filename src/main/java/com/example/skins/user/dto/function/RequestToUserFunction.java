@@ -2,7 +2,9 @@ package com.example.skins.user.dto.function;
 
 import com.example.skins.user.dto.PutUserRequest;
 import com.example.skins.user.entity.User;
+import com.example.skins.user.entity.UserRoles;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.function.BiFunction;
 
@@ -21,6 +23,7 @@ public class RequestToUserFunction implements BiFunction<UUID, PutUserRequest, U
                 .surname(request.getSurname())
                 .email(request.getEmail())
                 .password(request.getPassword())
+                .roles(List.of(UserRoles.USER))
                 .build();
     }
 

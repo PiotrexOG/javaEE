@@ -3,11 +3,14 @@ package com.example.skins.user.service;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.NoArgsConstructor;
-
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
 import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
-import com.example.skins.crypto.component.Pbkdf2PasswordHash;
 import com.example.skins.user.entity.User;
+import com.example.skins.user.entity.UserRoles;
+import java.util.List;
 import com.example.skins.user.repository.api.UserRepository;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
@@ -39,26 +42,28 @@ public class UserService {
      */
     private final Pbkdf2PasswordHash passwordHash;
 
-    public List<User> findAll() {
-        return repository.findAll();
-    }
+
     /**
      * @param repository   repository for Skin entity
      * @param passwordHash hash mechanism used for storing users' passwords
      */
     @Inject
-    public UserService(UserRepository repository, Pbkdf2PasswordHash passwordHash) {
+    public UserService(UserRepository repository,
+                                   @SuppressWarnings("CdiInjectionPointsInspection") Pbkdf2PasswordHash passwordHash) {
         this.repository = repository;
         this.passwordHash = passwordHash;
     }
 
-    /**
-     * @param id user's id
-     * @return container (can be empty) with user
-     */
+    @RolesAllowed(UserRoles.USER)
     public Optional<User> find(UUID id) {
         return repository.find(id);
     }
+
+    @RolesAllowed(UserRoles.ADMIN)
+    public List<User> findAll() {
+        return repository.findAll();
+    }
+
 
     /**
      * Seeks for single user using login and password. Can be used in authentication module.
@@ -66,6 +71,7 @@ public class UserService {
      * @param login user's login
      * @return container (can be empty) with user
      */
+//        @RolesAllowed(UserRoles.ADMIN)
     public Optional<User> find(String login) {
         return repository.findByLogin(login);
     }
@@ -75,6 +81,7 @@ public class UserService {
      *
      * @param user new user to be saved
      */
+        @PermitAll
     public void create(User user) {
         user.setPassword(passwordHash.generate(user.getPassword().toCharArray()));
         repository.create(user);
@@ -93,6 +100,7 @@ public class UserService {
      * @param password user's password
      * @return true if provided login and password are correct
      */
+        @PermitAll
     public boolean verify(String login, String password) {
         return find(login)
                 .map(user -> passwordHash.verify(password.toCharArray(), user.getPassword()))

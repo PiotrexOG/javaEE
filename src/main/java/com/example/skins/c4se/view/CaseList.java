@@ -6,6 +6,7 @@ import com.example.skins.c4se.model.CasesModel;
 import com.example.skins.c4se.service.CaseService;
 import com.example.skins.component.ModelFunctionFactory;
 import com.example.skins.skin.service.SkinService;
+import jakarta.ejb.EJB;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -16,16 +17,24 @@ import java.util.Optional;
 @RequestScoped
 @Named
 public class CaseList {
-    private final CaseService service;
-    private final SkinService skinService;
+    private CaseService service;
+    private SkinService skinService;
     private CasesModel Cases;
 
     private final ModelFunctionFactory factory;
 
-    @Inject
-    public CaseList(CaseService service, SkinService skinService, ModelFunctionFactory modelFunctionFactory) {
+     @EJB
+    public void setCaseService(CaseService service){
         this.service = service;
-        this.skinService =skinService;
+    }
+
+    @EJB
+    public void setSkinService(SkinService skinService){
+        this.skinService = skinService;
+    }
+
+    @Inject
+    public CaseList(ModelFunctionFactory modelFunctionFactory) {
         factory = modelFunctionFactory;
     }
 

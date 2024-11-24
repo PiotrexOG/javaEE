@@ -1,5 +1,9 @@
+piotrulo:adminadmin
+Authorization: Basic cGlvdHJ1bG86YWRtaW5hZG1pbg==
+###
+// @no-cookie-jar
 GET http://localhost:9080/cs-go/api/users
-
+Authorization: Basic cGlvdHJ1bG86YWRtaW5hZG1pbg==
 ###
 
 GET http://localhost:9080/cs-go/api/users/c4804e0f-769e-4ab9-9ebe-0578fb4f00a6
@@ -83,7 +87,7 @@ DELETE http://localhost:9080/cs-go/api/users/c4804e0f-769e-4ab9-9ebe-0578fb4f00a
 
 ###
 
-
+// @no-cookie-jar
 GET http://localhost:9080/cs-go/api/cases
 
 ###

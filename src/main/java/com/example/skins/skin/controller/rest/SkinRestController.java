@@ -12,7 +12,12 @@ import com.example.skins.skin.dto.PutSkinRequest;
 import com.example.skins.skin.service.SkinService;
 import com.example.skins.component.DtoFunctionFactory;
 import com.example.skins.c4se.service.CaseService;
-
+import com.example.skins.user.entity.UserRoles;
+import com.example.skins.user.service.UserService;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.ejb.EJB;
+import jakarta.inject.Inject;
+import jakarta.security.enterprise.SecurityContext;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
@@ -27,10 +32,14 @@ public class SkinRestController implements SkinController {
     private SkinService service;
     private final DtoFunctionFactory factory;
     private CaseService caseService;
+    private UserService userService;
+
+    private final SecurityContext securityContext;
 
     @Inject
-    public SkinRestController(SkinService service, CaseService caseService, DtoFunctionFactory factory) {
+    public SkinRestController(DtoFunctionFactory factory, SecurityContext securityContext) {
         this.factory = factory;
+                this.securityContext = securityContext;
     }
 
     /**
@@ -49,18 +58,26 @@ public class SkinRestController implements SkinController {
         this.caseService = service;
     }
 
+        @EJB
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
 
     @Override
+        @RolesAllowed(UserRoles.USER)
     public GetSkinsResponse getSkins() {
-        return factory.skinsToResponse().apply(service.findAll());
+        return factory.skinsToResponse().apply(service.findAllForCallerPrincipal());
     }
 
     @Override
+        @RolesAllowed(UserRoles.USER)
     public GetSkinsResponse getCaseSkins(UUID uuid) {
         return service.findAllByCase(uuid).map(factory.skinsToResponse()).orElseThrow(NotFoundException::new);
     }
 
     @Override
+        @RolesAllowed(UserRoles.USER)
     public GetSkinResponse getCaseSkin(UUID uuid, UUID skinId) {
         var skins = service.findAllByCase(uuid);
         if(skins.isPresent()){
@@ -74,21 +91,27 @@ public class SkinRestController implements SkinController {
     }
 
     @Override
+        @RolesAllowed(UserRoles.USER)
     public GetSkinsResponse getUserSkins(UUID uuid) {
         return service.findAllByUser(uuid).map(factory.skinsToResponse()).orElseThrow(NotFoundException::new);
     }
 
     @Override
+        @RolesAllowed(UserRoles.USER)
     public GetSkinResponse getSkin(UUID uuid) {
         return service.find(uuid).map(factory.skinToResponse()).orElseThrow(NotFoundException::new);
     }
 
     @Override
+        @RolesAllowed(UserRoles.USER)
     public void putSkin(UUID id, PutSkinRequest request) {
         try {
             service.find(id).ifPresent(skin -> {
                 throw new BadRequestException("Skin with id: " + id + " already exists!");
             });
+                        request.setUserId(
+                    userService.find(securityContext.getCallerPrincipal().getName())
+                            .get().getId());
             service.create(factory.requestToSkin().apply(id, request));
         } catch (EJBException ex) {
             if (ex.getCause() instanceof IllegalArgumentException) {
@@ -100,6 +123,7 @@ public class SkinRestController implements SkinController {
     }
 
     @Override
+    @RolesAllowed(UserRoles.USER)
     public void patchSkin(UUID id, PatchSkinRequest request) {
         service.find(id).ifPresentOrElse(
                 entity -> service.update(factory.updateSkinWithRequestFunction().apply(entity, request)),
@@ -110,6 +134,7 @@ public class SkinRestController implements SkinController {
     }
 
     @Override
+    @RolesAllowed(UserRoles.USER)
     public void deleteSkin(UUID id) {
         service.find(id).ifPresentOrElse(
                 entity -> service.delete(id),
@@ -120,6 +145,7 @@ public class SkinRestController implements SkinController {
     }
 
     @Override
+    @RolesAllowed(UserRoles.USER)
     public void putSkin(UUID caseId, UUID skinId, PutSkinRequest request) {
         request.setCaseId(caseId);
         putSkin(caseId, request);
@@ -134,11 +160,13 @@ public class SkinRestController implements SkinController {
     }
 
     @Override
+        @RolesAllowed(UserRoles.USER)
     public void patchSkin(UUID caseId, UUID skinId, PatchSkinRequest request) {
        patchSkin(skinId, request);
     }
 
     @Override
+    @RolesAllowed(UserRoles.USER)
     public void deleteSkin(UUID caseId, UUID skinId) {
         deleteSkin(skinId);
     }

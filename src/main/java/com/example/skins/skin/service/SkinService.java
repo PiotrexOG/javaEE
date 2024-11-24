@@ -1,17 +1,19 @@
 package com.example.skins.skin.service;
 
+import jakarta.ejb.EJBAccessException;
 import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
 import com.example.skins.c4se.repository.api.CaseRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import com.example.skins.user.entity.UserRoles;
 import lombok.NoArgsConstructor;
 import com.example.skins.skin.repository.api.SkinRepository;
 import com.example.skins.skin.entity.Skin;
 import com.example.skins.user.entity.User;
 import com.example.skins.user.repository.api.UserRepository;
-
+import jakarta.security.enterprise.SecurityContext;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -39,16 +41,19 @@ public class SkinService {
      */
     private final UserRepository userRepository;
 
+    private final SecurityContext securityContext;
+
     /**
      * @param skinRepository  repository for skin entity
      * @param caseRepository repository for case entity
      * @param userRepository repository for user entity
      */
     @Inject
-    public SkinService(SkinRepository skinRepository, CaseRepository caseRepository, UserRepository userRepository) {
+    public SkinService(SkinRepository skinRepository, CaseRepository caseRepository, UserRepository userRepository, SecurityContext securityContext) {
         this.skinRepository = skinRepository;
         this.caseRepository = caseRepository;
         this.userRepository = userRepository;
+        this.securityContext = securityContext;
     }
 
     /**
@@ -88,8 +93,16 @@ public class SkinService {
     /**
      * Creates new skin.
      *
-     * @param skin new skin
      */
+    public List<Skin> findAllForCallerPrincipal() {
+    if (securityContext.isCallerInRole(UserRoles.ADMIN)) {
+        return findAll();
+    }
+    User user = userRepository.findByLogin(securityContext.getCallerPrincipal().getName())
+            .orElseThrow(IllegalStateException::new);
+    return findAll(user);
+    }
+
     public void create(Skin skin) {
         if (skinRepository.find(skin.getId()).isPresent()) {
             throw new IllegalArgumentException("Skin already exists.");
@@ -123,6 +136,18 @@ public class SkinService {
      * @param id existing skin's id to be deleted
      */
     public void delete(UUID id) {
+        skinRepository.delete(skinRepository.find(id).orElseThrow());
+
+        User user = userRepository.findByLogin(securityContext.getCallerPrincipal().getName()).get();
+
+        skinRepository.find(id).ifPresent(skin -> {
+            if(!securityContext.isCallerInRole(UserRoles.ADMIN) && !skin.getUser().getId().equals(user.getId()))
+                throw new EJBAccessException("Caller does not have sufficient rights to delete this skin.");
+            var aCase = skin.getCaseItem();
+            var skins = skin.getCaseItem().getSkins();
+            skins.removeIf(skin1 -> skin1.getId().equals(id));
+            aCase.setSkins(skins);
+        });
         skinRepository.delete(skinRepository.find(id).orElseThrow());
     }
 

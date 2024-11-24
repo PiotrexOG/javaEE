@@ -6,6 +6,8 @@ import com.example.skins.c4se.entity.Case;
 import com.example.skins.c4se.repository.api.CaseRepository;
 import com.example.skins.skin.repository.api.SkinRepository;
 import jakarta.transaction.Transactional;
+import com.example.skins.user.entity.UserRoles;
+import jakarta.annotation.security.RolesAllowed;
 import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -52,7 +54,7 @@ public class CaseService {
 //        // Usuń skrzynkę z repozytorium
 //        case_repository.delete(caseItem);
 //    }
-
+    @RolesAllowed(UserRoles.ADMIN)
     public void delete(UUID uuid) {
 //        Optional<List<Commit>> commitsToDelete = commitService.findAllByRepo(uuid);
 //        commitsToDelete.ifPresent(commits-> commits.forEach(commit -> commitService.delete(commit.getId())));
@@ -63,6 +65,7 @@ public class CaseService {
      * @param id case's id
      * @return container with case entity
      */
+        @RolesAllowed(UserRoles.USER)
     public Optional<Case> find(UUID id) {
         Optional<Case> aCase = case_repository.find(id);
         /* Until lazy loaded list of characters is not accessed it is not in cache, so it does not need bo te cared of. */
@@ -72,6 +75,7 @@ public class CaseService {
     /**
      * @return all available cases
      */
+        @RolesAllowed(UserRoles.USER)
     public List<Case> findAll() {
         return case_repository.findAll();
     }
@@ -81,12 +85,12 @@ public class CaseService {
      *
      * @param cas new case to be saved
      */
-
+//    @RolesAllowed(UserRoles.ADMIN)
     public void create(Case aCase) {
         case_repository.create(aCase);
     }
 
-
+    @RolesAllowed(UserRoles.ADMIN)
     public void update(Case acase) {
         case_repository.update(acase);
     }
