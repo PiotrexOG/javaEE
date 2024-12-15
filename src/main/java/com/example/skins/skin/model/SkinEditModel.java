@@ -1,5 +1,7 @@
 package com.example.skins.skin.model;
 
+import com.example.skins.c4se.entity.Case;
+import com.example.skins.user.entity.User;
 import jakarta.servlet.http.Part;
 import lombok.*;
 
@@ -24,7 +26,13 @@ public class SkinEditModel {
     /**
      * Skin's background story.
      */
+    private User user;
+
+    private Case aCase;
+
     private Float floatValue;
+
+    private Long version;
 
 
 }

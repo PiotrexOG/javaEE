@@ -13,6 +13,7 @@ public class SkinToResponseFunction implements Function<Skin, GetSkinResponse> {
                 .id(skin.getId())
                 .name(skin.getName())
                 .floatValue(skin.getFloatValue())
+                .version(skin.getVersion())
                 .Case(GetSkinResponse.Case.builder()
                         .name(skin.getCaseItem().getName())
                         .uuid(skin.getCaseItem().getId())

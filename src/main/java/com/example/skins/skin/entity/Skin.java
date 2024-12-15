@@ -2,6 +2,7 @@ package com.example.skins.skin.entity;
 
 
 import com.example.skins.c4se.entity.Case;
+import com.example.skins.entity.VersionAndCreationDateAuditable;
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
 import lombok.*;
@@ -20,23 +21,40 @@ import java.util.UUID;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@ToString(callSuper = true)
+@ToString()
 @EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "skins")
 
-public class Skin implements Serializable {
+public class Skin extends VersionAndCreationDateAuditable implements Serializable {
     @Id
     private UUID id;
 
     private String name;
     private Float floatValue;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
   //  @JoinColumn(name = "case")
     private Case caseItem; // Relacja do Case
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
   //  @JoinColumn(name = "user_name")
     private User user; // Relacja do User (1:N)
 
+
+    @Override
+    public void updateCreationDateTime()
+    {
+        super.updateCreationDateTime();
+    }
+    @Override
+    public void updateEditDateTime()
+    {
+        super.updateEditDateTime();
+    }
 
 }

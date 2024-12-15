@@ -20,6 +20,25 @@
                 </h:column>
 
                 <h:column>
+                    <f:facet name="header">Version</f:facet>
+                    <h:outputText value="#{skin.version}"/>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Created</f:facet>
+                    <h:outputText value="#{skin.creationDateTime}">
+                        <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm"/>
+                    </h:outputText>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Edited</f:facet>
+                    <h:outputText value="#{skin.modifiedDateTime}">
+                        <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm"/>
+                    </h:outputText>
+                </h:column>
+
+                <h:column>
                     <f:facet name="header">#{msg.view}</f:facet>
                     <h:link outcome="/skin/skin_view.xhtml" value="#{msg.view}">
                         <f:param name="id" value="#{skin.id}"/>

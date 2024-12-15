@@ -14,4 +14,5 @@ public class PutSkinRequest {
     private float floatValue;
     private UUID userId;
     private UUID caseId;
+    private Long version;
 }

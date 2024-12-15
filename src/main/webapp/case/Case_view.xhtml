@@ -32,6 +32,13 @@
                                 <h:outputText value="#{skin.id}"/>
                             </h:column>
 
+                                                        <h:column>
+                                <f:facet name="header">data</f:facet>
+                            <h:outputText value="#{skin.creationDateTime}">
+                                <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm"/>
+                            </h:outputText>
+                                                        </h:column>
+
                             <h:column>
                                 <f:facet name="header">#{msg.skin_name}</f:facet>
                                 <h:outputText value="#{skin.name}"/>

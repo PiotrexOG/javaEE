@@ -18,6 +18,9 @@ public class SkinsToModelFunction implements Function<List<Skin>, SkinsModel> {
                         .map(Skin -> SkinsModel.Skin.builder()
                                 .id(Skin.getId())
                                 .name(Skin.getName())
+                                .version(Skin.getVersion())
+                                .creationDateTime(Skin.getCreationDateTime())
+                                .modifiedDateTime(Skin.getEditDateTime())
                                 .build())
                         .toList())
                 .build();

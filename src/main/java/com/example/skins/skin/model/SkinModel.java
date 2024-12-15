@@ -2,6 +2,8 @@ package com.example.skins.skin.model;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 /**
  * JSF view model class in order to not use entity classes. Represents single Skin to be displayed.
  */
@@ -26,5 +28,9 @@ public class SkinModel {
 
 
     private String acase;
+
+    private Long version;
+
+    private LocalDateTime creationDateTime;
 
 }

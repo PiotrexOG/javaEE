@@ -22,4 +22,6 @@ public class GetSkinsResponse {
     }
 
     private List<Skin> skins;
+
+    private Long version;
 }

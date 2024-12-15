@@ -30,4 +30,5 @@ public class GetSkinResponse {
 
     private String name;
     private Case Case;
+    private Long version;
 }

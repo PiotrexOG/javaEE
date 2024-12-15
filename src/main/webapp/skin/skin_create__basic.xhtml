@@ -13,7 +13,8 @@
                 <f:loadBundle var="msg" basename="skins.view.i18n.messages"/>
         <article>
             <header><h2>#{msg.create_skin}</h2></header>
-            <h:form styleClass="container" onreset="onReset()" enctype="multipart/form-data">
+            <h:form styleClass="container" onreset="onReset()" enctype="multipart/form-data"  id="form">
+                                <h:messages/>
                 <div class="row">
                     <div class="col-2 p-2 text-center">
                         <h:button styleClass="btn" value="#{msg.previous}" disabled="true"/>

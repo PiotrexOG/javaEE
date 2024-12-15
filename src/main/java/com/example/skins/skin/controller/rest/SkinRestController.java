@@ -2,6 +2,7 @@ package com.example.skins.skin.controller.rest;
 
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBException;
+import jakarta.persistence.OptimisticLockException;
 import jakarta.transaction.TransactionalException;
 import lombok.extern.java.Log;
 import com.example.skins.skin.controller.api.SkinController;
@@ -113,6 +114,8 @@ public class SkinRestController implements SkinController {
                     userService.find(securityContext.getCallerPrincipal().getName())
                             .get().getId());
             service.create(factory.requestToSkin().apply(id, request));
+            //service.crea(factory.requestToSkin().apply(id, request));
+            //todo
         } catch (EJBException ex) {
             if (ex.getCause() instanceof IllegalArgumentException) {
                 log.log(Level.WARNING, ex.getMessage(), ex);
@@ -120,17 +123,28 @@ public class SkinRestController implements SkinController {
             }
             throw ex;
         }
+        catch (TransactionalException ex) {
+            if (ex.getCause() instanceof OptimisticLockException) {
+                throw new BadRequestException(ex.getCause());
+            }
+        }
     }
 
     @Override
     @RolesAllowed(UserRoles.USER)
     public void patchSkin(UUID id, PatchSkinRequest request) {
-        service.find(id).ifPresentOrElse(
-                entity -> service.update(factory.updateSkinWithRequestFunction().apply(entity, request)),
-                () -> {
-                    throw new NotFoundException();
-                }
-        );
+        try {
+            service.find(id).ifPresentOrElse(
+                    entity -> service.update(factory.updateSkinWithRequestFunction().apply(entity, request)),
+                    () -> {
+                        throw new NotFoundException();
+                    }
+            );
+        } catch (TransactionalException ex) {
+            if (ex.getCause() instanceof OptimisticLockException) {
+                throw new BadRequestException(ex.getCause());
+            }
+        }
     }
 
     @Override

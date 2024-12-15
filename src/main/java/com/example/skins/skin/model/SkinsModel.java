@@ -3,6 +3,7 @@ package com.example.skins.skin.model;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,6 +40,14 @@ public class SkinsModel implements Serializable {
          * Name of the Skin.
          */
         private String name;
+
+        private Long version;
+
+        private Float floatValue;
+
+        private LocalDateTime creationDateTime;
+
+        private LocalDateTime modifiedDateTime;
 
     }
 

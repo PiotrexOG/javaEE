@@ -1,13 +1,14 @@
 package com.example.skins.skin.service;
 
+import com.example.skins.c4se.entity.Case;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.EJBAccessException;
 import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
 import com.example.skins.c4se.repository.api.CaseRepository;
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import com.example.skins.user.entity.UserRoles;
+import jakarta.ws.rs.NotFoundException;
 import lombok.NoArgsConstructor;
 import com.example.skins.skin.repository.api.SkinRepository;
 import com.example.skins.skin.entity.Skin;
@@ -114,13 +115,21 @@ public class SkinService {
         /* Both sides of relationship must be handled (if accessed) because of cache. */
         caseRepository.find(skin.getCaseItem().getId())
                 .ifPresent(aCase -> aCase.getSkins().add(skin));
-//        userRepository.find(skin.getUser().getId())
-//               .ifPresent(user -> user.getSkins().add(skin));
+        userRepository.find(skin.getUser().getId())
+               .ifPresent(user -> user.getSkins().add(skin));
     }
 
 //     public void addSkinToCase(UUID caseId, Skin skin) {
 //        skinRepository.addSkinToCase(caseId, skin);
 //    }
+
+    @RolesAllowed(UserRoles.USER)
+    public void createForCallerPrincipal(Skin skin) {
+        User user = userRepository.findByLogin(securityContext.getCallerPrincipal().getName())
+                .orElseThrow(IllegalStateException::new);
+        skin.setUser(user);
+        skinRepository.create(skin);
+    }
     /**
      * Updates existing skin.
      *
@@ -128,6 +137,34 @@ public class SkinService {
      */
     public void update(Skin skin) {
         skinRepository.update(skin);
+    }
+
+        @RolesAllowed(UserRoles.USER)
+    public void update(Skin skin, UUID initialCase) {
+        Skin existingSkin = skinRepository.find(skin.getId())
+                .orElseThrow(() -> new NotFoundException("Skin not found: " + skin.getId()));
+
+        checkAdminRoleOrOwner(Optional.of(existingSkin));
+
+        Case newCase = caseRepository.find(skin.getCaseItem().getId())
+                .orElseThrow(() -> new NotFoundException("Case not found: " + skin.getCaseItem().getId()));
+
+        if (!initialCase.equals(newCase.getId())) {
+            Case oldCase = caseRepository.find(initialCase)
+                    .orElseThrow(() -> new NotFoundException("Initial case not found: " + initialCase));
+
+            oldCase.getSkins().removeIf(f -> f.getId().equals(existingSkin.getId()));
+            caseRepository.update(oldCase);
+        }
+
+        existingSkin.setName(skin.getName());
+        existingSkin.setFloatValue(skin.getFloatValue());
+        existingSkin.setCaseItem(newCase);
+
+        userRepository.update(existingSkin.getUser());
+        caseRepository.update(newCase);
+
+        skinRepository.update(existingSkin);
     }
 
     /**
@@ -160,5 +197,17 @@ public class SkinService {
     public Optional<List<Skin>> findAllByUser(UUID id) {
         return userRepository.find(id)
                 .map(skinRepository::findAllByUser);
+    }
+
+    private void checkAdminRoleOrOwner(Optional<Skin> skin) throws EJBAccessException {
+        if (securityContext.isCallerInRole(UserRoles.ADMIN)) {
+            return;
+        }
+        if (securityContext.isCallerInRole(UserRoles.USER)
+                && skin.isPresent()
+                && skin.get().getUser().getName().equals(securityContext.getCallerPrincipal().getName())) {
+            return;
+        }
+        throw new EJBAccessException("Caller not authorized.");
     }
 }
