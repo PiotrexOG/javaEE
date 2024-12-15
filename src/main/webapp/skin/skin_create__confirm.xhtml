@@ -10,12 +10,13 @@
     </f:metadata>
 
     <ui:define name="content">
+        <f:loadBundle var="msg" basename="skins.view.i18n.messages"/>
         <article>
-            <header><h2>Create skin - basic information</h2></header>
+            <header><h2>#{msg.create_skin}</h2></header>
             <h:form styleClass="container" onreset="onReset()" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-2 p-2 text-center">
-                        <h:commandButton styleClass="btn" value="Previous" immediate="true"
+                        <h:commandButton styleClass="btn" value="#{msg.previous}" immediate="true"
                                          action="#{skinCreate.goToBasicAction()}"/>
                     </div>
                 </div>
@@ -24,7 +25,7 @@
 
                     <div class="row mb-2">
                         <div class="col-6">
-                            Files changed
+                            #{msg.name}
                         </div>
                         <div class="col-6">
                             <h:outputText value="#{skinCreate.skin.name}"/>
@@ -33,7 +34,7 @@
 
                     <div class="row mb-2">
                         <div class="col-6">
-                            Timestamp
+                            #{msg.floatValue}
                         </div>
                         <div class="col-6">
                             <h:outputText value="#{skinCreate.skin.floatValue}"/>
@@ -42,7 +43,7 @@
 
                     <div class="row mb-2">
                         <div class="col-6">
-                            Repository
+                            #{msg.acase}
                         </div>
                         <div class="col-6">
                             <h:outputText value="#{skinCreate.skin.acase.name}"/>
@@ -53,11 +54,11 @@
 
                 <div class="row">
                     <div class="col-2 p-2 text-center">
-                        <h:commandButton styleClass="btn btn-primary" value="Create"
+                        <h:commandButton styleClass="btn btn-primary" value="#{msg.create}"
                                          action="#{skinCreate.saveAction()}"/>
                     </div>
                     <div class="col-2 p-2 text-center">
-                        <h:commandButton styleClass="btn btn-secondary" value="Cancel"
+                        <h:commandButton styleClass="btn btn-secondary" value="#{msg.cancel}"
                                          action="#{skinCreate.cancelAction()}"/>
                     </div>
                 </div>

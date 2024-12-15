@@ -11,14 +11,17 @@
     </f:metadata>
 
     <ui:define name="content">
-        <article>
-            <header><h2><h:outputText value="#{skinView.skin.name}"/></h2></header>
+    <f:loadBundle var="msg" basename="skins.view.i18n.messages"/>
+
+            <header>
+                <h2><h:outputText value="#{skinView.skin.name}"/></h2>
+            </header>
             <div class="container">
                 <div class="row">
                     <div class="col-4">
                         <div class="row mb-2">
                             <div class="col-6">
-                                Name
+                                #{msg.name}:
                             </div>
                             <div class="col-6">
                                 <h:outputText value="#{skinView.skin.name}"/>
@@ -27,7 +30,7 @@
 
                         <div class="row mb-2">
                             <div class="col-6">
-                                Case
+                                                #{msg.acase}:
                             </div>
                             <div class="col-6">
                                 <h:outputText value="#{skinView.skin.acase}"/>
@@ -36,18 +39,24 @@
 
                         <div class="row mb-2">
                             <div class="col-6">
-                                Float Value
+                                #{msg.floatValue}:
                             </div>
                             <div class="col-6">
                                 <h:outputText value="#{skinView.skin.floatValue}"/>
                             </div>
                         </div>
 
+                        <h:column>
+                        <f:facet name="header">#{msg.edit}</f:facet>
+                        <h:link outcome="/skin/skin_edit.xhtml" value="#{msg.edit}">
+                            <f:param name="id" value="#{skinView.id}"/>
+                        </h:link>
+                        </h:column>
+
                     </div>
 
                 </div>
             </div>
-        </article>
     </ui:define>
 
 </ui:composition>

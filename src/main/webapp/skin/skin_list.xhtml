@@ -7,43 +7,43 @@
 
     <ui:define name="content">
         <h:outputStylesheet library="case" name="css/case_list.css"/><!-- Automatically relocated to head. -->
-
+        <f:loadBundle var="msg" basename="skins.view.i18n.messages"/>
         <article class="text--justified">
-            <header><h2>Skins</h2></header>
+            <header><h2>#{msg.skins}</h2></header>
 
             <h:dataTable value="#{skinList.skins.skins}" var="skin"
                          styleClass="table align-middle mb-0 bg-white" headerClass="bg-light">
 
                 <h:column>
-                    <f:facet name="header">Name</f:facet>
+                    <f:facet name="header">#{msg.name}</f:facet>
                     <h:outputText value="#{skin.name}"/>
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">View</f:facet>
-                    <h:link outcome="/skin/skin_view.xhtml" value="View">
+                    <f:facet name="header">#{msg.view}</f:facet>
+                    <h:link outcome="/skin/skin_view.xhtml" value="#{msg.view}">
                         <f:param name="id" value="#{skin.id}"/>
                     </h:link>
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">Edit</f:facet>
-                    <h:link outcome="/skin/skin_edit.xhtml" value="Edit">
+                    <f:facet name="header">#{msg.edit}</f:facet>
+                    <h:link outcome="/skin/skin_edit.xhtml" value="#{msg.edit}">
                         <f:param name="id" value="#{skin.id}"/>
                     </h:link>
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">Delete</f:facet>
+                    <f:facet name="header">#{msg.delete}</f:facet>
                     <h:form>
-                        <h:commandButton styleClass="btn" value="Delete"
+                        <h:commandButton styleClass="btn" value="#{msg.delete}"
                                          action="#{skinList.deleteAction(skin)}"/>
                     </h:form>
                 </h:column>
 
                 <f:facet name="footer">
                     <h:button styleClass="btn" outcome="/skin/skin_create__basic.xhtml"
-                              value="Create new skin"/>
+                              value="#{msg.create_skin}"/>
                 </f:facet>
             </h:dataTable>
         </article>

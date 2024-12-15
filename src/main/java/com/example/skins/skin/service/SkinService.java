@@ -136,7 +136,7 @@ public class SkinService {
      * @param id existing skin's id to be deleted
      */
     public void delete(UUID id) {
-        skinRepository.delete(skinRepository.find(id).orElseThrow());
+    //    skinRepository.delete(skinRepository.find(id).orElseThrow());
 
         User user = userRepository.findByLogin(securityContext.getCallerPrincipal().getName()).get();
 

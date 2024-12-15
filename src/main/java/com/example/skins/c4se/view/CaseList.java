@@ -8,7 +8,10 @@ import com.example.skins.component.ModelFunctionFactory;
 import com.example.skins.skin.service.SkinService;
 import jakarta.ejb.EJB;
 
+
 import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
@@ -36,6 +39,8 @@ public class CaseList {
     @Inject
     public CaseList(ModelFunctionFactory modelFunctionFactory) {
         factory = modelFunctionFactory;
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = facesContext.getExternalContext();
     }
 
     public CasesModel getCases() {

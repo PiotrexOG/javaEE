@@ -16,8 +16,10 @@ public class UpdateSkinWithModelFunction implements BiFunction<Skin, SkinEditMod
     @SneakyThrows
     public Skin apply(Skin entity, SkinEditModel request) {
         return Skin.builder()
+                .user(entity.getUser())
                 .id(entity.getId())
                 .name(request.getName())
+                .floatValue(entity.getFloatValue())
                 .caseItem(entity.getCaseItem())
                 .build();
     }

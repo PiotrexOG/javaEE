@@ -2,7 +2,6 @@ package com.example.skins.c4se.view;
 
 import com.example.skins.c4se.entity.Case;
 import com.example.skins.c4se.model.CaseModel;
-import com.example.skins.c4se.repository.api.CaseRepository;
 import com.example.skins.c4se.service.CaseService;
 import com.example.skins.component.ModelFunctionFactory;
 import com.example.skins.skin.dto.GetSkinsResponse;
@@ -19,7 +18,6 @@ import lombok.Setter;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -56,7 +54,8 @@ public class CaseView implements Serializable {
 
         Optional<Case> repo = service.find(id);
         if (repo.isPresent()) {
-
+            Case aCase = repo.get();
+            aCase.setSkins(skinService.findAllForCallerPrincipal().stream().filter(skin -> skin.getCaseItem().getId().equals(aCase.getId())).toList());
             this.case_item = factory.CaseToModel().apply(repo.get());
         } else {
             FacesContext.getCurrentInstance().getExternalContext().responseSendError(HttpServletResponse.SC_NOT_FOUND, "Repository not found");
@@ -64,10 +63,10 @@ public class CaseView implements Serializable {
     }
 
 
-    public String deleteSkin(GetSkinsResponse.Skin skin) throws IOException {
+    public void deleteSkin(GetSkinsResponse.Skin skin) throws IOException {
         skinService.delete(skin.getId());
-
-        return "Case_view?faces-redirect=true&id=" + id;
+        init();
+       // return "Case_view?faces-redirect=true&id=" + id;
     }
 
 }

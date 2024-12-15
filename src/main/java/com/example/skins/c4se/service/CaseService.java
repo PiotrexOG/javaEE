@@ -1,10 +1,12 @@
 package com.example.skins.c4se.service;
 
+import com.example.skins.skin.entity.Skin;
 import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
 import com.example.skins.c4se.entity.Case;
 import com.example.skins.c4se.repository.api.CaseRepository;
 import com.example.skins.skin.repository.api.SkinRepository;
+import jakarta.security.enterprise.SecurityContext;
 import jakarta.transaction.Transactional;
 import com.example.skins.user.entity.UserRoles;
 import jakarta.annotation.security.RolesAllowed;
@@ -33,12 +35,15 @@ public class CaseService {
      */
     private final CaseRepository case_repository;
 
+    private final SecurityContext securityContext;
+
     /**
      * @param case_repository repository for case entity
      */
     @Inject
-    public CaseService(CaseRepository case_repository) {
+    public CaseService(CaseRepository case_repository, @SuppressWarnings("CdiInjectionPointsInspection") SecurityContext securityContext) {
         this.case_repository = case_repository;
+        this.securityContext = securityContext;
     }
 
 //    public void delete(UUID caseId) {
@@ -65,17 +70,25 @@ public class CaseService {
      * @param id case's id
      * @return container with case entity
      */
-        @RolesAllowed(UserRoles.USER)
+        @RolesAllowed({UserRoles.ADMIN,UserRoles.USER})
     public Optional<Case> find(UUID id) {
         Optional<Case> aCase = case_repository.find(id);
         /* Until lazy loaded list of characters is not accessed it is not in cache, so it does not need bo te cared of. */
 //        profession.ifPresent(value -> log.info("Number of professions: %d".formatted(value.getCharacters().size())));
+//        if (aCase.isPresent()) {
+//            List<Skin> skins = aCase.get().getSkins();
+//            String currentUserName = securityContext.getCallerPrincipal().getName();
+//            boolean isAdmin = securityContext.isCallerInRole(UserRoles.ADMIN);
+//            System.out.println(skins);
+//            skins.removeIf(skin -> (!skin.getUser().getName().equals(currentUserName)) && !isAdmin);
+//            aCase.get().setSkins(skins);
+//        }
         return aCase;
     }
     /**
      * @return all available cases
      */
-        @RolesAllowed(UserRoles.USER)
+        @RolesAllowed({UserRoles.ADMIN,UserRoles.USER})
     public List<Case> findAll() {
         return case_repository.findAll();
     }

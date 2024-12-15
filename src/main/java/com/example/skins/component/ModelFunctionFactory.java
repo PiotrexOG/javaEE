@@ -2,6 +2,8 @@ package com.example.skins.component;
 
 import com.example.skins.c4se.model.function.CaseToModelFunction;
 import com.example.skins.c4se.model.function.CasesToModelFunction;
+import com.example.skins.user.model.function.UserToModelFunction;
+import com.example.skins.user.model.function.UsersToModelFunction;
 import jakarta.enterprise.context.ApplicationScoped;
 import com.example.skins.skin.model.SkinEditModel;
 import com.example.skins.skin.model.SkinModel;
@@ -73,4 +75,11 @@ public class ModelFunctionFactory {
         return new UpdateSkinWithModelFunction();
     }
 
+
+    public UserToModelFunction userToModel() {
+        return new UserToModelFunction();
+    }
+    public UsersToModelFunction usersToModel() {
+        return new UsersToModelFunction();
+    }
 }

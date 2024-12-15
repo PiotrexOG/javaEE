@@ -52,7 +52,8 @@ public class SkinList {
      */
     public SkinsModel getSkins() {
         if (Skins == null) {
-            Skins = factory.SkinsToModel().apply(service.findAll());
+           // Skins = factory.SkinsToModel().apply(service.findAll());
+            Skins = factory.SkinsToModel().apply(service.findAllForCallerPrincipal());
         }
         return Skins;
     }

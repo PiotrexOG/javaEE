@@ -2,6 +2,7 @@ package com.example.skins.user.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.security.enterprise.SecurityContext;
 import lombok.NoArgsConstructor;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
@@ -42,24 +43,26 @@ public class UserService {
      */
     private final Pbkdf2PasswordHash passwordHash;
 
+    private final SecurityContext securityContext;
+
 
     /**
      * @param repository   repository for Skin entity
      * @param passwordHash hash mechanism used for storing users' passwords
      */
     @Inject
-    public UserService(UserRepository repository,
-                                   @SuppressWarnings("CdiInjectionPointsInspection") Pbkdf2PasswordHash passwordHash) {
+    public UserService(UserRepository repository, @SuppressWarnings("CdiInjectionPointsInspection") Pbkdf2PasswordHash passwordHash, SecurityContext securityContext) {
         this.repository = repository;
         this.passwordHash = passwordHash;
+        this.securityContext = securityContext;
     }
 
-    @RolesAllowed(UserRoles.USER)
+    @PermitAll
     public Optional<User> find(UUID id) {
         return repository.find(id);
     }
 
-    @RolesAllowed(UserRoles.ADMIN)
+    @PermitAll
     public List<User> findAll() {
         return repository.findAll();
     }
@@ -71,7 +74,7 @@ public class UserService {
      * @param login user's login
      * @return container (can be empty) with user
      */
-//        @RolesAllowed(UserRoles.ADMIN)
+    @PermitAll
     public Optional<User> find(String login) {
         return repository.findByLogin(login);
     }
@@ -87,10 +90,12 @@ public class UserService {
         repository.create(user);
     }
 
+    @PermitAll
     public void update(User user) {
         repository.update(user);
     }
 
+        @RolesAllowed(UserRoles.ADMIN)
     public void delete(UUID id) {
         repository.delete(repository.find(id).orElseThrow());
     }
@@ -144,6 +149,20 @@ public class UserService {
 //            repository.update(user);
 //        });
 //    }
+
+    public Optional<User> findCallerPrincipal() {
+        if (securityContext.getCallerPrincipal() != null) {
+            if (securityContext.isCallerInRole("admin")) {
+                System.out.println("Użytkownik jest administratorem.");
+            } else {
+                System.out.println("Użytkownik nie jest administratorem.");
+            }
+            return find(securityContext.getCallerPrincipal().getName());
+        } else {
+            return Optional.empty();
+        }
+    }
+
 
 
 

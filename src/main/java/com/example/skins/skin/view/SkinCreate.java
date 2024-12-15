@@ -6,14 +6,16 @@ import jakarta.enterprise.context.Conversation;
 import jakarta.enterprise.context.ConversationScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import jakarta.security.enterprise.SecurityContext;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
 import com.example.skins.skin.model.SkinCreateModel;
 import com.example.skins.skin.service.SkinService;
 import com.example.skins.c4se.service.CaseService;
+import com.example.skins.user.service.UserService;
 import com.example.skins.component.ModelFunctionFactory;
-
+import com.example.skins.skin.entity.Skin;
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
@@ -39,6 +41,10 @@ public class SkinCreate implements Serializable {
      */
     private CaseService caseService;
 
+    private UserService userService;
+
+    private final SecurityContext securityContext;
+
     /**
      * Factory producing functions for conversion between models and entities.
      */
@@ -48,7 +54,7 @@ public class SkinCreate implements Serializable {
      * Skin exposed to the view.
      */
     @Getter
-    private SkinCreateModel Skin;
+    private SkinCreateModel skin;
 
     /**
      * Available Cases.
@@ -68,10 +74,12 @@ public class SkinCreate implements Serializable {
     @Inject
     public SkinCreate(
             ModelFunctionFactory factory,
-            Conversation conversation
+            Conversation conversation,
+            SecurityContext securityContext
     ) {
         this.factory = factory;
         this.conversation = conversation;
+        this.securityContext = securityContext;
     }
 
         /**
@@ -90,6 +98,9 @@ public class SkinCreate implements Serializable {
         this.caseService = caseService;
     }
 
+    @EJB
+    public void setUserService(UserService userService){this.userService = userService;}
+
     /**
      * In order to prevent calling service on different steps of JSF request lifecycle, model property is cached within
      * field and initialized during init of the view. @PostConstruct method is called after h:form header is already
@@ -100,7 +111,7 @@ public class SkinCreate implements Serializable {
             Cases = caseService.findAll().stream()
                     .map(factory.CaseToModel())
                     .collect(Collectors.toList());
-            Skin = SkinCreateModel.builder()
+            skin = SkinCreateModel.builder()
                     .id(UUID.randomUUID())
                     .build();
             conversation.begin();
@@ -163,7 +174,11 @@ public class SkinCreate implements Serializable {
      * @return Skins list navigation case
      */
     public String saveAction() {
-        skinService.create(factory.modelToSkin().apply(Skin));
+
+        Skin newSkin = factory.modelToSkin().apply(skin);
+        newSkin.setUser(userService.find(securityContext.getCallerPrincipal().getName()).get());
+        skinService.create(newSkin);
+
         conversation.end();
         return "/skin/skin_list.xhtml?faces-redirect=true";
     }

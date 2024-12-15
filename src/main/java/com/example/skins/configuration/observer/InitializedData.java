@@ -168,6 +168,13 @@ public class InitializedData{
                     .user(piotrulo)         // przypisanie do użytkownika
                     .build();
 
+            Skin ewikSkin = Skin.builder()
+                    .id(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4997"))
+                    .name("ewik Phoenix")
+                    .floatValue(0.10f)
+                    .caseItem(premiumCase)  // przypisanie do premiumCase
+                    .user(ewik)         // przypisanie do użytkownika
+                    .build();
             //defaultCase.setSkins(Arrays.asList(redSkin, blueSkin));
 
             caseService.create(defaultCase);
@@ -175,12 +182,13 @@ public class InitializedData{
 
             skinService.create(redSkin);
             skinService.create(blueSkin);
+            skinService.create(ewikSkin);
 
             System.out.println("halo");
             System.out.println(skinService.findAllByCase(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123")));
             System.out.println("halo");
 
-            System.out.println(caseService.find(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123")).get().getSkins());
+            //System.out.println(caseService.find(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4123")).get().getSkins());
 
 //        List<Skin> all_skins = skinService.findAll();
 //        for (Skin skin : all_skins) {

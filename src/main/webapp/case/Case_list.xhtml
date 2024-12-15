@@ -7,14 +7,14 @@
 
     <ui:define name="content">
         <h:outputStylesheet library="case" name="css/case_list.css"/><!-- Automatically relocated to head. -->
-
+        <f:loadBundle var="msg" basename="skins.view.i18n.messages"/>
         <article class="text--justified">
-            <header><h2>Cases</h2></header>
+            <header><h2>#{msg.cases}</h2></header>
 
             <h:dataTable value="#{caseList.cases.cases}" var="Case"
                          styleClass="table align-middle mb-0 bg-white" headerClass="bg-light">
                 <h:column>
-                    <f:facet name="header">Case name</f:facet>
+                    <f:facet name="header">#{msg.case_name}</f:facet>
                     <h:outputText value="#{Case.name}"/>
                 </h:column>
 
@@ -24,17 +24,17 @@
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">View</f:facet>
-                    <h:link outcome="/case/Case_view.xhtml" value="View">
+                    <f:facet name="header">#{msg.view}</f:facet>
+                    <h:link outcome="/case/Case_view.xhtml" value="#{msg.view}">
                         <f:param name="id" value="#{Case.id}"/>
                     </h:link>
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">Delete</f:facet>
-                    <h:form>
-                        <h:commandButton styleClass="btn" value="Delete"
-                                         action="#{caseList.deleteAction(Case)}"/>
+                    <h:form rendered="#{facesContext.externalContext.isUserInRole('admin')}">
+                        <h:commandButton styleClass="btn" value="#{msg.delete}"
+                                         action="#{caseList.deleteAction(Case)}"
+                                         rendered="#{facesContext.externalContext.isUserInRole('admin')}"/>
                     </h:form>
                 </h:column>
             </h:dataTable>

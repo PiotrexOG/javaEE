@@ -11,6 +11,7 @@
     </f:metadata>
 
     <ui:define name="content">
+        <f:loadBundle var="msg" basename="skins.view.i18n.messages"/>
         <article>
             <header>
                 <h2>
@@ -27,38 +28,38 @@
 
 
                             <h:column>
-                                <f:facet name="header">Skin id</f:facet>
+                                <f:facet name="header">#{msg.skin_id}</f:facet>
                                 <h:outputText value="#{skin.id}"/>
                             </h:column>
 
                             <h:column>
-                                <f:facet name="header">Skin name</f:facet>
+                                <f:facet name="header">#{msg.skin_name}</f:facet>
                                 <h:outputText value="#{skin.name}"/>
                             </h:column>
 
                             <h:column>
-                                <f:facet name="header">Skin float</f:facet>
+                                <f:facet name="header">#{msg.skin_float_value}</f:facet>
                                 <h:outputText value="#{skin.floatValue}"/>
                             </h:column>
 
                             <h:column>
-                                <f:facet name="header">View</f:facet>
-                                <h:link outcome="/skin/skin_view.xhtml" value="View">
+                                <f:facet name="header">#{msg.view}</f:facet>
+                                <h:link outcome="/skin/skin_view.xhtml" value="#{msg.view}">
                                     <f:param name="id" value="#{skin.id}"/>
                                 </h:link>
                             </h:column>
 
                             <h:column>
-                                <f:facet name="header">Edit</f:facet>
-                                <h:link outcome="/skin/skin_edit.xhtml" value="Edit">
+                                <f:facet name="header">#{msg.edit}</f:facet>
+                                <h:link outcome="/skin/skin_edit.xhtml" value="#{msg.edit}">
                                     <f:param name="id" value="#{skin.id}"/>
                                 </h:link>
                             </h:column>
 
                             <h:column>
-                                <f:facet name="header">Delete</f:facet>
+                                <f:facet name="header">#{msg.delete}</f:facet>
                                 <h:form>
-                                    <h:commandButton styleClass="btn" value="Delete"
+                                    <h:commandButton styleClass="btn" value="#{msg.delete}"
                                                      action="#{caseView.deleteSkin(skin)}"/>
                                 </h:form>
                             </h:column>
@@ -66,7 +67,7 @@
                         </h:dataTable>
 
                         <h:button styleClass="btn" outcome="/skin/skin_create__basic.xhtml"
-                                  value="Create new skin"/>
+                                  value="#{msg.create_skin}"/>
                     </div>
                 </div>
             </div>
