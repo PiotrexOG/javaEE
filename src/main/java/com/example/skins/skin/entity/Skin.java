@@ -22,7 +22,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString()
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "skins")
 
@@ -33,28 +33,24 @@ public class Skin extends VersionAndCreationDateAuditable implements Serializabl
     private String name;
     private Float floatValue;
 
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
   //  @JoinColumn(name = "case")
     private Case caseItem; // Relacja do Case
 
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
   //  @JoinColumn(name = "user_name")
     private User user; // Relacja do User (1:N)
 
 
-    @Override
-    public void updateCreationDateTime()
-    {
-        super.updateCreationDateTime();
-    }
-    @Override
-    public void updateEditDateTime()
-    {
-        super.updateEditDateTime();
-    }
+//    @Override
+//    public void updateCreationDateTime()
+//    {
+//        super.updateCreationDateTime();
+//    }
+//    @Override
+//    public void updateEditDateTime()
+//    {
+//        super.updateEditDateTime();
+//    }
 
 }

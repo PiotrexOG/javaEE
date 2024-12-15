@@ -37,8 +37,8 @@ public class SkinCreateModel {
     /**
      * Skin's background story.
      */
-        @NotNull
-    private User user;
+//        @NotNull
+//    private User user;
 
     @Min(0)
     private Float floatValue;

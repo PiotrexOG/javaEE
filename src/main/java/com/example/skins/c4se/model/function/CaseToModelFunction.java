@@ -21,6 +21,9 @@ public class CaseToModelFunction implements Function<Case, CaseModel> {
                                 .id(skin.getId())
                                 .name(skin.getName())
                                 .floatValue(skin.getFloatValue())
+                                .version(skin.getVersion())
+                                .creationDateTime(skin.getCreationDateTime())
+                                .editDateTime(skin.getEditDateTime())
                                 .build())
                         .toList())
                 .build();

@@ -8,6 +8,7 @@ import jakarta.ejb.Stateless;
 import com.example.skins.c4se.repository.api.CaseRepository;
 import jakarta.inject.Inject;
 import com.example.skins.user.entity.UserRoles;
+import jakarta.persistence.OptimisticLockException;
 import jakarta.ws.rs.NotFoundException;
 import lombok.NoArgsConstructor;
 import com.example.skins.skin.repository.api.SkinRepository;
@@ -135,36 +136,46 @@ public class SkinService {
      *
      * @param skin skin to be updated
      */
+//    public void update(Skin skin) {
+//        skinRepository.update(skin);
+//    }
+//
+//        @RolesAllowed(UserRoles.USER)
+//    public void update(Skin skin, UUID initialCase) {
+//        Skin existingSkin = skinRepository.find(skin.getId())
+//                .orElseThrow(() -> new NotFoundException("Skin not found: " + skin.getId()));
+//
+//        checkAdminRoleOrOwner(Optional.of(existingSkin));
+//
+//        Case newCase = caseRepository.find(skin.getCaseItem().getId())
+//                .orElseThrow(() -> new NotFoundException("Case not found: " + skin.getCaseItem().getId()));
+//
+//        if (!initialCase.equals(newCase.getId())) {
+//            Case oldCase = caseRepository.find(initialCase)
+//                    .orElseThrow(() -> new NotFoundException("Initial case not found: " + initialCase));
+//
+//            oldCase.getSkins().removeIf(f -> f.getId().equals(existingSkin.getId()));
+//            caseRepository.update(oldCase);
+//        }
+//
+//        existingSkin.setName(skin.getName());
+//        existingSkin.setFloatValue(skin.getFloatValue());
+//        existingSkin.setCaseItem(newCase);
+//
+//        userRepository.update(existingSkin.getUser());
+//        caseRepository.update(newCase);
+//
+//        skinRepository.update(existingSkin);
+//    }
+
+
     public void update(Skin skin) {
+    try {
         skinRepository.update(skin);
     }
-
-        @RolesAllowed(UserRoles.USER)
-    public void update(Skin skin, UUID initialCase) {
-        Skin existingSkin = skinRepository.find(skin.getId())
-                .orElseThrow(() -> new NotFoundException("Skin not found: " + skin.getId()));
-
-        checkAdminRoleOrOwner(Optional.of(existingSkin));
-
-        Case newCase = caseRepository.find(skin.getCaseItem().getId())
-                .orElseThrow(() -> new NotFoundException("Case not found: " + skin.getCaseItem().getId()));
-
-        if (!initialCase.equals(newCase.getId())) {
-            Case oldCase = caseRepository.find(initialCase)
-                    .orElseThrow(() -> new NotFoundException("Initial case not found: " + initialCase));
-
-            oldCase.getSkins().removeIf(f -> f.getId().equals(existingSkin.getId()));
-            caseRepository.update(oldCase);
-        }
-
-        existingSkin.setName(skin.getName());
-        existingSkin.setFloatValue(skin.getFloatValue());
-        existingSkin.setCaseItem(newCase);
-
-        userRepository.update(existingSkin.getUser());
-        caseRepository.update(newCase);
-
-        skinRepository.update(existingSkin);
+    catch (OptimisticLockException ex){
+        throw ex;
+    }
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.example.skins.skin.view;
 
 import jakarta.ejb.EJB;
+import jakarta.ejb.EJBException;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
@@ -33,7 +34,6 @@ public class SkinEdit implements Serializable {
      */
     private SkinService service;
 
-    private final FacesContext facesContext;
 
     /**
      * Factory producing functions for conversion between models and entities.
@@ -47,10 +47,6 @@ public class SkinEdit implements Serializable {
     @Getter
     private UUID id;
 
-    @Setter
-    @Getter
-    private UUID initialCase;
-
     /**
      * Skin exposed to the view.
      */
@@ -58,14 +54,9 @@ public class SkinEdit implements Serializable {
     private SkinEditModel Skin;
 
 
-    /**
-     * @param service service for managing Skins
-     * @param factory factory producing functions for conversion between models and entities
-     */
     @Inject
-    public SkinEdit(ModelFunctionFactory factory, FacesContext facesContext) {
+    public SkinEdit(ModelFunctionFactory factory) {
         this.factory = factory;
-        this.facesContext = facesContext;
     }
 
     @EJB
@@ -81,7 +72,6 @@ public class SkinEdit implements Serializable {
         Optional<Skin> Skin = service.find(id);
         if (Skin.isPresent()) {
             this.Skin = factory.SkinToEditModel().apply(Skin.get());
-            this.initialCase = this.Skin.getACase().getId();
         } else {
             FacesContext.getCurrentInstance().getExternalContext().responseSendError(HttpServletResponse.SC_NOT_FOUND, "Skin not found");
         }
@@ -92,20 +82,38 @@ public class SkinEdit implements Serializable {
      *
      * @return navigation case to the same page
      */
-    public String saveAction() throws IOException {
+//    public String saveAction() throws IOException {
+//
+//        try {
+//            service.update(factory.updateSkin().apply(service.find(id).orElseThrow(), Skin), initialCase);
+//            String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
+//            return viewId + "?faces-redirect=true&includeViewParams=true";
+//        } catch (TransactionalException ex) {
+//            if (ex.getCause() instanceof OptimisticLockException) {
+//                init();
+//                facesContext.addMessage(null, new FacesMessage("Version collision."));
+//            }
+//            return null;
+//        }
+//
+//    }
 
+
+    public void saveAction() {
         try {
-            service.update(factory.updateSkin().apply(service.find(id).orElseThrow(), Skin), initialCase);
-            String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
-            return viewId + "?faces-redirect=true&includeViewParams=true";
-        } catch (TransactionalException ex) {
-            if (ex.getCause() instanceof OptimisticLockException) {
-                init();
-                facesContext.addMessage(null, new FacesMessage("Version collision."));
-            }
-            return null;
+            service.update(factory.updateSkin().apply(service.find(id).orElseThrow(), Skin));
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Commit saved successfully", null));
         }
-
+        catch (EJBException ex){
+            if(ex.getCause() instanceof OptimisticLockException)
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error saving commit - Optimistic Lock Exception "
+//                            + ex.getCause().getMessage()
+                            , null));
+        }
+        String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
+//        return viewId + "?faces-redirect=true&includeViewParams=true";
     }
 
 }

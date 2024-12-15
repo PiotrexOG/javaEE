@@ -26,9 +26,9 @@ public class SkinEditModel {
     /**
      * Skin's background story.
      */
-    private User user;
+ //   private User user;
 
-    private Case aCase;
+   // private Case aCase;
 
     private Float floatValue;
 
