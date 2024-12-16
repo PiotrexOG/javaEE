@@ -1,5 +1,6 @@
 package com.example.skins.skin.service;
 
+import com.example.skins.Logger.Loggable;
 import jakarta.ejb.EJBAccessException;
 import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
@@ -103,6 +104,7 @@ public class SkinService {
     return findAll(user);
     }
 
+    @Loggable
     public void create(Skin skin) {
         if (skinRepository.find(skin.getId()).isPresent()) {
             throw new IllegalArgumentException("Skin already exists.");
@@ -126,6 +128,7 @@ public class SkinService {
      *
      * @param skin skin to be updated
      */
+    @Loggable
     public void update(Skin skin) {
         skinRepository.update(skin);
     }
@@ -135,6 +138,7 @@ public class SkinService {
      *
      * @param id existing skin's id to be deleted
      */
+    @Loggable
     public void delete(UUID id) {
     //    skinRepository.delete(skinRepository.find(id).orElseThrow());
 

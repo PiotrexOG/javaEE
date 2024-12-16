@@ -64,9 +64,10 @@ public class SkinList {
      * @param Skin Skin to be removed
      * @return navigation case to list_Skins
      */
-    public String deleteAction(SkinsModel.Skin Skin) {
+    public void deleteAction(SkinsModel.Skin Skin) {
         service.delete(Skin.getId());
-        return "skin_list?faces-redirect=true";
+        Skins = null;
+       // return "skin_list?faces-redirect=true";
     }
 
 }

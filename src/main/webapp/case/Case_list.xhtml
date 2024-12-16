@@ -11,7 +11,7 @@
         <article class="text--justified">
             <header><h2>#{msg.cases}</h2></header>
 
-            <h:dataTable value="#{caseList.cases.cases}" var="Case"
+            <h:dataTable  id="caseTable" value="#{caseList.cases.cases}" var="Case"
                          styleClass="table align-middle mb-0 bg-white" headerClass="bg-light">
                 <h:column>
                     <f:facet name="header">#{msg.case_name}</f:facet>
@@ -30,11 +30,15 @@
                     </h:link>
                 </h:column>
 
-                <h:column>
-                    <h:form rendered="#{facesContext.externalContext.isUserInRole('admin')}">
-                        <h:commandButton styleClass="btn" value="#{msg.delete}"
-                                         action="#{caseList.deleteAction(Case)}"
-                                         rendered="#{facesContext.externalContext.isUserInRole('admin')}"/>
+
+                <h:column rendered="#{facesContext.externalContext.isUserInRole('admin')}">
+                    <f:facet name="header">#{msg.delete}</f:facet>
+                    <h:form>
+                        <h:commandButton styleClass="btn" value="#{messages['delete']}"
+                                         actionListener="#{caseList.deleteAction(Case)}"
+                                         onclick="stopPropagation()">
+                            <f:ajax execute="@this" render=":caseTable"/>
+                        </h:commandButton>
                     </h:form>
                 </h:column>
             </h:dataTable>

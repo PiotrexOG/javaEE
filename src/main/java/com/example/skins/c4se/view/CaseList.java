@@ -50,10 +50,10 @@ public class CaseList {
         return Cases;
     }
 
-    public String deleteAction(CasesResponse.Case repo) {
-        System.out.println(skinService.findAllByCase(repo.getId()));
-
-        //todo
+    public void deleteAction(CasesResponse.Case repo) {
+//        System.out.println(skinService.findAllByCase(repo.getId()));
+//
+//        //todo
 
         skinService.findAllByCase(repo.getId()).ifPresent(skins ->
                 skins.forEach(skin -> System.out.println(skin.getName())));
@@ -64,7 +64,8 @@ public class CaseList {
         Optional<Case> foundRepo = service.find(repo.getId());
         //foundRepo.ifPresent(service::delete);
         foundRepo.ifPresent(repository -> service.delete(repository.getId()));
-        return "Case_list?faces-redirect=true";
+        Cases = null;
+        //return "Case_list?faces-redirect=true";
     }
 
 
