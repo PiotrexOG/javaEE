@@ -2,6 +2,7 @@ package com.example.skins.skin.dto;
 
 import com.example.skins.c4se.dto.CasesResponse;
 import com.example.skins.c4se.entity.Case;
+import com.example.skins.user.dto.GetUsersResponse;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -29,6 +30,8 @@ public class GetSkinResponse {
     private Float floatValue;
 
     private String name;
+    private GetUsersResponse.User user;
+
     private Case Case;
-    private Long version;
+   // private Long version;
 }

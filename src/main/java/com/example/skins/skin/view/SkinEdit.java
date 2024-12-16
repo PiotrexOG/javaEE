@@ -112,8 +112,8 @@ public class SkinEdit implements Serializable {
 //                            + ex.getCause().getMessage()
                             , null));
         }
-        String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
-//        return viewId + "?faces-redirect=true&includeViewParams=true";
+//        String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
+////        return viewId + "?faces-redirect=true&includeViewParams=true";
     }
 
 }

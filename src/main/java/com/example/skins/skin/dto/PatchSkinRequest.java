@@ -11,5 +11,5 @@ import java.time.LocalDateTime;
 public class PatchSkinRequest {
     private String name;
     private float floatValue;
-    private Long version;
+   // private Long version;
 }

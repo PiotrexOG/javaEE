@@ -51,7 +51,6 @@ public class CaseList {
     }
 
     public String deleteAction(CasesResponse.Case repo) {
-        System.out.println(skinService.findAllByCase(repo.getId()));
 
         //todo
 

@@ -29,8 +29,8 @@ public class SkinModel {
 
     private String acase;
 
-    private Long version;
-
-    private LocalDateTime creationDateTime;
+//    private Long version;
+//
+//    private LocalDateTime creationDateTime;
 
 }

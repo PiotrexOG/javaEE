@@ -19,11 +19,8 @@ public class UpdateSkinWithModelFunction implements BiFunction<Skin, SkinEditMod
                 .user(entity.getUser())
                 .id(entity.getId())
                 .name(request.getName())
-                .floatValue(entity.getFloatValue())
+                .floatValue(request.getFloatValue())
                 .caseItem(entity.getCaseItem())
-//                .user(User.builder()
-//                        .id(request.getUser().getId())
-//                        .build())
                 .version(request.getVersion())
                 .creationDateTime(entity.getCreationDateTime())
                 .build();

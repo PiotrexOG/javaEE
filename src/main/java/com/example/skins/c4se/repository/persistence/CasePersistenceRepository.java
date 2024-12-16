@@ -6,6 +6,9 @@ import com.example.skins.c4se.repository.api.CaseRepository;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +30,13 @@ public class CasePersistenceRepository implements CaseRepository {
 
     @Override
     public List<Case> findAll() {
-        return em.createQuery("select g from Case g", Case.class).getResultList();
+        //return em.createQuery("select g from Case g", Case.class).getResultList();
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Case> cq = cb.createQuery(Case.class);
+        Root<Case> caseRoot = cq.from(Case.class);
+        cq.select(caseRoot);
+        return em.createQuery(cq).getResultList();
     }
 
     @Override

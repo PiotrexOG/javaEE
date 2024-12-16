@@ -210,15 +210,15 @@ public class SkinService {
                 .map(skinRepository::findAllByUser);
     }
 
-    private void checkAdminRoleOrOwner(Optional<Skin> skin) throws EJBAccessException {
-        if (securityContext.isCallerInRole(UserRoles.ADMIN)) {
-            return;
-        }
-        if (securityContext.isCallerInRole(UserRoles.USER)
-                && skin.isPresent()
-                && skin.get().getUser().getName().equals(securityContext.getCallerPrincipal().getName())) {
-            return;
-        }
-        throw new EJBAccessException("Caller not authorized.");
-    }
+//    private void checkAdminRoleOrOwner(Optional<Skin> skin) throws EJBAccessException {
+//        if (securityContext.isCallerInRole(UserRoles.ADMIN)) {
+//            return;
+//        }
+//        if (securityContext.isCallerInRole(UserRoles.USER)
+//                && skin.isPresent()
+//                && skin.get().getUser().getName().equals(securityContext.getCallerPrincipal().getName())) {
+//            return;
+//        }
+//        throw new EJBAccessException("Caller not authorized.");
+//    }
 }

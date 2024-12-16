@@ -26,18 +26,30 @@
                                      styleClass="table align-middle mb-0 bg-white" headerClass="bg-light">
 
 
-
                             <h:column>
                                 <f:facet name="header">#{msg.skin_id}</f:facet>
                                 <h:outputText value="#{skin.id}"/>
                             </h:column>
 
-                                                        <h:column>
-                                <f:facet name="header">data</f:facet>
-                            <h:outputText value="#{skin.creationDateTime}">
-                                <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm"/>
-                            </h:outputText>
-                                                        </h:column>
+                            <h:column>
+                                <f:facet name="header">#{msg.version}</f:facet>
+                                <h:outputText value="#{skin.version}"/>
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">#{msg.creation_date}</f:facet>
+                                <h:outputText value="#{skin.creationDateTime}" >
+                                    <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm"/>
+                                </h:outputText>
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">#{msg.modification_date}</f:facet>
+                                <h:outputText value="#{skin.editDateTime}">
+                                    <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm"/>
+                                </h:outputText>
+                            </h:column>
+
 
                             <h:column>
                                 <f:facet name="header">#{msg.skin_name}</f:facet>

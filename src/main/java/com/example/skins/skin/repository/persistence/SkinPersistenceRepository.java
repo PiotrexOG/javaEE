@@ -9,6 +9,10 @@ import com.example.skins.user.entity.User;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -31,13 +35,30 @@ public class SkinPersistenceRepository implements SkinRepository {
 
     @Override
     public List<Skin> findAllByUser(User user) {
-        return em.createQuery("select c from Skin c where c.user = :user", Skin.class).setParameter("user", user).getResultList();
+       // return em.createQuery("select c from Skin c where c.user = :user", Skin.class).setParameter("user", user).getResultList();
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+
+        CriteriaQuery<Skin> cq = cb.createQuery(Skin.class);
+
+        Root<Skin> skinRoot = cq.from(Skin.class);
+
+        cq.where(cb.equal(skinRoot.get("user"), user));
+
+        return em.createQuery(cq).getResultList();
+        
     }
 
 
     @Override
     public List<Skin> findAllByCase(Case aCase) {
-        return em.createQuery("select c from Skin c where c.caseItem = :case", Skin.class).setParameter("case", aCase).getResultList();
+        //return em.createQuery("select c from Skin c where c.caseItem = :case", Skin.class).setParameter("case", aCase).getResultList();
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Skin> cq = cb.createQuery(Skin.class);
+        Root<Skin> skinRoot = cq.from(Skin.class);
+        cq.where(cb.equal(skinRoot.get("caseItem"), aCase));
+        return em.createQuery(cq).getResultList();
     }
 
     @Override
@@ -47,7 +68,13 @@ public class SkinPersistenceRepository implements SkinRepository {
 
     @Override
     public List<Skin> findAll() {
-        return em.createQuery("select c from Skin c", Skin.class).getResultList();
+       // return em.createQuery("select c from Skin c", Skin.class).getResultList();
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Skin> cq = cb.createQuery(Skin.class);
+        Root<Skin> skinRoot = cq.from(Skin.class);
+        cq.select(skinRoot);
+        return em.createQuery(cq).getResultList();
     }
 
     @Override

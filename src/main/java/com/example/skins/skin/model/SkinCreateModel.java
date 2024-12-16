@@ -1,6 +1,7 @@
 package com.example.skins.skin.model;
 
 import com.example.skins.c4se.model.CaseModel;
+import com.example.skins.skin.validator.ValidSkinFloat;
 import com.example.skins.user.entity.User;
 import jakarta.servlet.http.Part;
 import lombok.*;
@@ -41,6 +42,7 @@ public class SkinCreateModel {
 //    private User user;
 
     @Min(0)
+    @ValidSkinFloat
     private Float floatValue;
 
     @NotNull
